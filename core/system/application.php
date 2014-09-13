@@ -12,11 +12,7 @@ class Application
         self::CheckReporting($GLOBALS['CONFIG']['DebugMode']);    
         $DynamicRoot = self::GenerateSitePath();
         define( '__Dynamic_PATH__',$DynamicRoot );
-        define( '__LIB_PATH__', __SITE_PATH__.'/lib' );
-        define( '__Controller_PATH__', __LIB_PATH__ . '/controller/' );
-        define( '__Model_PATH__', __LIB_PATH__ . '/model/' );
         define( '__View_PATH__', __LIB_PATH__ . '/view/' );
-        define( '__Packages_PATH__', __LIB_PATH__ . '/packages/' );
         
         router::DoRoute();
        
