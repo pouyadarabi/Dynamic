@@ -42,14 +42,9 @@ class Application
     }
     
 	private static function GenerateSitePath(){
-    	$DOCUMENT_ROOT_fix = str_replace('/','\\',$_SERVER['DOCUMENT_ROOT']);
-    	$site_path_fix = str_replace('/','\\',__SITE_PATH__);
-    	$last = str_replace($DOCUMENT_ROOT_fix,'',$site_path_fix);
-    	$last = str_replace('\\', '/', ltrim($last,'\\')); 	
-   	
-    	if(trim($last) != '' && substr($last, 0 , -1) != '/')
-    		$last .= '/';
-    	return $last;
+		$folder = dirname($_SERVER['SCRIPT_NAME']);
+		$last = ($folder == '/' ? '' : ltrim($folder . '/','/') );
+		return $last;
     }
 
 }
