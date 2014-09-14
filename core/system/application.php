@@ -40,8 +40,7 @@ class Application
     
 	private static function GenerateSitePath(){
 		$folder = dirname($_SERVER['SCRIPT_NAME']);
-		$last = ($folder == '/' ? '' : $folder . '/' );
-		return $last;
+		return $folder == '/' ? '' : $folder . '/';
     }
 
 }
