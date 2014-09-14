@@ -12,7 +12,8 @@ class Application
         self::CheckReporting($GLOBALS['CONFIG']['DebugMode']);    
         $DynamicRoot = self::GenerateSitePath();
         define( '__Dynamic_PATH__',$DynamicRoot );
-        define( '__View_PATH__', __LIB_PATH__ . '/view/' );
+        define( '__APP_PATH__', __SITE_PATH__.'/app' );
+        define( '__View_PATH__', __APP_PATH__ . '/view/' );
         
         router::DoRoute();
        
@@ -39,7 +40,7 @@ class Application
     
 	private static function GenerateSitePath(){
 		$folder = dirname($_SERVER['SCRIPT_NAME']);
-		$last = ($folder == '/' ? '' : ltrim($folder . '/','/') );
+		$last = ($folder == '/' ? '' : ltrim($folder,'/') . '/' );
 		return $last;
     }
 

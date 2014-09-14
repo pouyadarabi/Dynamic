@@ -5,9 +5,6 @@ class Controller extends AbstractClass
 
     public function __construct()
     {
-    //	include_once __Packages_PATH__.'authorization.php';
-     //   Packages_Authorization::getInstance()->DoAuthorization();
-
     }
 
     protected function Redirect( $url = '', $append = '' )
