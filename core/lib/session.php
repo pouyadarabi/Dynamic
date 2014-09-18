@@ -4,13 +4,7 @@ use core\main\libs;
 class Session extends libs
 {
 	private static $inited = false;
-    public function __construct()
-    {
-      //  parent::__construct();
-      //  $this->Sec = new Packages_Security();
-        //self::Start();
-    }
-
+	
     public static function init()
     {
         if ( session_id() == '' )
@@ -49,8 +43,6 @@ class Session extends libs
         }
         
         self::$inited = true;
-        // Fix For Session Fixtion bug
-        // session_regenerate_id ();
     }
 
     public static function Destroy()
@@ -108,7 +100,6 @@ class Session extends libs
     {
     	if(!self::$inited)
     		self::init();
-        // Fix For Session Fixtion bug
         session_regenerate_id();
     }
 }

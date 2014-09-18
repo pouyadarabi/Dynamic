@@ -5,7 +5,7 @@ class router
 {
     public static function DoRoute()
     {
-       	if(!empty($_SERVER [ 'QUERY_STRING' ]))
+       	if(!empty($_SERVER [ 'QUERY_STRING' ]) && !empty($GLOBALS['CONFIG']['UrlAllowedChars']))
         	self::filter_uri( $_SERVER [ 'QUERY_STRING' ] );  
         
         $url = parse_url ( $_SERVER ['REQUEST_URI'], PHP_URL_PATH );
@@ -36,13 +36,12 @@ class router
     }
     private static function filter_uri( $str )
     {
-    	if (!empty($GLOBALS['CONFIG']['UrlAllowedChars'])) {
-			$str = urldecode( $str );
-    		if ( !preg_match( "|^[" . str_replace( array( '\\-', '\-' ), '-', preg_quote( $GLOBALS['CONFIG']['UrlAllowedChars'], '-' ) ) . "]+$|i", $str )) {
-    			echo( '<h1>Bad Request</h1>' );
-    			http_response_code( 400 );
-    			die;
-    		}
+		$str = urldecode( $str );
+    	if ( !preg_match( "|^[" . str_replace( array( '\\-', '\-' ), '-', preg_quote( $GLOBALS['CONFIG']['UrlAllowedChars'], '-' ) ) . "]+$|i", $str )) {
+    		echo( '<h1>Bad Request</h1>' );
+    		http_response_code( 400 );
+    		die;
     	}
+    	
     }
 }

@@ -8,33 +8,36 @@ class Request extends libs{
 		$Check = $this->Check ( $index, $ReqType, $TypeArray );
 		if(isset ( $Req [$index] )){
 			$input =  $Req [$index];
-			if( (is_string ( $input ) && strlen ( $input ) > $Length))
-				$this->PrintLast ( Messages::$CheckInput);
-			if(count($Range) == 2){
+			if( $Length !== FALSE)
+				if( (is_string ( $input )&& (strlen ( $input ) > $Length[1] || strlen ( $input ) < $Length[0])))
+					$this->PrintLast ( Messages::$CheckInput . ' for error no.1 in : '.$index);
+			if($Range !== FALSE){
 				if($input < $Range[0] || $input > $Range[1] )
-					$this->PrintLast ( Messages::$CheckInput );
+					$this->PrintLast ( Messages::$CheckInput. ' for error no.2 in : '.$index);
+				
 			}
-			if(count($Cases) > 0){
+			if($Cases !== FALSE){
 				if(!in_array($input, $Cases))
-					$this->PrintLast ( Messages::$CheckInput );
+					$this->PrintLast ( Messages::$CheckInput . ' for error no.3 in : '.$index);
+			
 			}
 		}
 		if ($Required === TRUE && $Check === FALSE) {
-			$this->PrintLast ( Messages::$CheckInput);
+			$this->PrintLast ( Messages::$CheckInput . ' for error no.4 in : '.$index);
 		}
 		if ($Clean === TRUE && $Check === TRUE) {
-			return Security::CleanXssString ( $Req [$index] );
+			return Security::CleanXssString ( $Req [$index]);
 		}
 		if ($Check === TRUE && isset ( $Req [$index] )) {
 			return $Req [$index];
 		} else
-			return '';
+			return false;
 	}
 	private function GetArrayByType($Type) {
 		switch ($Type) {
-			case MyConsts::$Request_POST :
+			case 'p' :
 				return $_POST;
-			case MyConsts::$Request_GET :
+			case 'g' :
 				return $_GET;
 		}
 	}

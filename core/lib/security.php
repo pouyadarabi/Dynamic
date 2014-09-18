@@ -228,9 +228,10 @@ class Security extends libs{
 
     private static function TypeDate( $str )
     {
+    	
         try {
-            $dt = new DateTime ( trim( $str ) );
-        } catch ( Exception $e ) {
+            $dt = new \DateTime( trim( $str ) );
+        } catch ( \Exception $e ) {
             return false;
         }
 

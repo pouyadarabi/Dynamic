@@ -23,16 +23,16 @@ class db extends libs{
 		try {
 		
 			if(!$DbName || !$DbHost || !$DbUser || !$DbPass)
-				$this->pdo = new PDO ( 'mysql:dbname=' . $GLOBALS['CONFIG']['DbName'] . ';host=' . $GLOBALS['CONFIG']['DbHost'], $GLOBALS['CONFIG']['DbUser'], $GLOBALS['CONFIG']['DbPass'] );
+				$this->pdo = new \PDO ( 'mysql:dbname=' . $GLOBALS['CONFIG']['DbName'] . ';host=' . $GLOBALS['CONFIG']['DbHost'], $GLOBALS['CONFIG']['DbUser'], $GLOBALS['CONFIG']['DbPass'] );
 			else 
-				$this->pdo = new PDO ( 'mysql:dbname=' . $DbName . ';host=' . $DbHost, $DbUser, $DbPass );
+				$this->pdo = new \PDO ( 'mysql:dbname=' . $DbName . ';host=' . $DbHost, $DbUser, $DbPass );
 			
 			$this->pdo->exec ( 'SET NAMES utf8' );
-			$this->pdo->setAttribute ( PDO::ATTR_EMULATE_PREPARES, FALSE );
+			$this->pdo->setAttribute ( \PDO::ATTR_EMULATE_PREPARES, FALSE );
 		//	$this->pdo->setAttribute(PDO::ATTR_AUTOCOMMIT, FALSE);
 			if ($GLOBALS['CONFIG']['SqlErrorDetais'])
-				$this->pdo->setAttribute ( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-		} catch ( Exception $e ) {
+				$this->pdo->setAttribute ( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
+		} catch ( \Exception $e ) {
 			trigger_error ( 'Could not connect to the database.', E_USER_ERROR );
 		}
 		
@@ -107,7 +107,7 @@ class db extends libs{
 		$res = $this->query ( $stmt, $myarr );
 		if ($res->rowCount () > 0) {
 			$rows = array ();
-			while ( $r = $res->fetch ( PDO::FETCH_ASSOC ) )
+			while ( $r = $res->fetch ( \PDO::FETCH_ASSOC ) )
 				$rows [] = $r;
 			
 			return $rows;
@@ -142,7 +142,7 @@ class db extends libs{
 		$cal = $this->res;
 		if ($query != false)
 			$cal = $query;
-		return $cal->fetch ( PDO::FETCH_ASSOC );
+		return $cal->fetch ( \PDO::FETCH_ASSOC );
 	}
 
 	public function fetchRow($query = false) {
@@ -150,7 +150,7 @@ class db extends libs{
 		$cal = $this->res;
 		if ($query != false)
 			$cal = $query;
-		return $cal->fetch ( PDO::FETCH_NUM );
+		return $cal->fetch ( \PDO::FETCH_NUM );
 	}
 	
 	public function fetchOne($query = false) {
@@ -184,7 +184,7 @@ class db extends libs{
 	
 	public function GetUniqeID(){
 	    $res = $this->pdo->query('SELECT uuid()');
-	    $res = $res->fetch ( PDO::FETCH_ASSOC );
+	    $res = $res->fetch ( \PDO::FETCH_ASSOC );
 	    return $res['uuid()'];
 	}
 }

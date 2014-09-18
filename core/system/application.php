@@ -5,12 +5,11 @@ class Application
 {
     public static function initialize()
     {
-
         $GLOBALS['CONFIG'] =  include dirname( __FILE__ ).'/config.php';
-        
+         
         self::SecurityHeader();
         self::CheckReporting($GLOBALS['CONFIG']['DebugMode']);    
-        $DynamicRoot = self::GenerateSitePath();
+        $DynamicRoot = self::getSitePath();
         define( '__Dynamic_PATH__',$DynamicRoot );
         define( '__APP_PATH__', __SITE_PATH__.'/app' );
         define( '__View_PATH__', __APP_PATH__ . '/view/' );
@@ -38,7 +37,7 @@ class Application
         }
     }
     
-	private static function GenerateSitePath(){
+	private static function getSitePath(){
 		$folder = dirname($_SERVER['SCRIPT_NAME']);
 		return $folder == '/' ? '' : $folder . '/';
     }

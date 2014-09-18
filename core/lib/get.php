@@ -2,13 +2,14 @@
 namespace core\lib;
 class GET extends Request {
 	
-	private $Clean = FALSE;
+private $Clean = TRUE;
 	private $Required = TRUE;
 	private $TypeArray = [];
+	private $Type = false;
 	private $MyCounter = 0;
-	private $Range =  [];
-	private $Cases =  [];
-	private $Length = 100;
+	private $Range =  FALSE;
+	private $Cases =  FALSE;
+	private $Length = [0, 100];
 	private static $_instance;
 	
 	public static final function getInstance() {
@@ -20,11 +21,14 @@ class GET extends Request {
 	}
 	public function get($index){
 		
-		$type = (isset($this->TypeArray[$this->MyCounter]) ? $this->TypeArray[$this->MyCounter++] : 's') ;
-		
-		$res =  parent::getvar ( $index, MyConsts::$Request_GET,$type , $this->Required, $this->Clean,$this->Length,$this->Range,$this->Cases );
-		$this->Range = [];
-		$this->Cases = [];
+		if($this->Type === false)
+			$type = (isset($this->TypeArray[$this->MyCounter]) ? $this->TypeArray[$this->MyCounter++] : 's') ;
+		else 
+			$type = $this->Type;
+		$res =  parent::getvar ( $index,'g',$type , $this->Required, $this->Clean,$this->Length,$this->Range,$this->Cases );
+		$this->Range = FALSE;
+		$this->Cases = FALSE;
+		$this->Length = FALSE;
 		return  $res;
 	}
 	
@@ -65,16 +69,21 @@ class GET extends Request {
 	 * @param mixed: $Type
 	 */
 	public function setType($Type) {
-		$this->TypeArray = $Type;
+		if(is_array($Type)){
+			$this->TypeArray = $Type;
+		}
+		else{
+			$this->Type = $Type;
+		}		
 		return $this;
 	}
 	
 	/**
-	 * @param number $Length
+	 * @param number $MinLength
+	 * @param number $MaxLength
 	 */
-	public function setLength($Length) {
-		$this->Length = $Length;
+	public function setLength($MinLength,$MaxLength) {
+		$this->Length = [$MinLength,$MaxLength];
 		return $this;
 	}
-	
 }
