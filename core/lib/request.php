@@ -9,16 +9,19 @@ class Request extends libs{
 		if(isset ( $Req [$index] )){
 			$input =  $Req [$index];
 			if( $Length !== FALSE)
-				if( (is_string ( $input )&& (strlen ( $input ) > $Length[1] || strlen ( $input ) < $Length[0])))
-					$this->PrintLast ( Messages::$CheckInput . ' for error no.1 in : '.$index);
+				if( (is_string ( $input ) && (strlen ( $input ) > $Length[1] || strlen ( $input ) < $Length[0])))
+					if($Required)
+						$this->PrintLast ( Messages::$CheckInput . ' for error no.1 in : '.$index);
 			if($Range !== FALSE){
 				if($input < $Range[0] || $input > $Range[1] )
-					$this->PrintLast ( Messages::$CheckInput. ' for error no.2 in : '.$index);
+					if($Required)
+						$this->PrintLast ( Messages::$CheckInput. ' for error no.2 in : '.$index);
 				
 			}
 			if($Cases !== FALSE){
 				if(!in_array($input, $Cases))
-					$this->PrintLast ( Messages::$CheckInput . ' for error no.3 in : '.$index);
+					if($Required)
+						$this->PrintLast ( Messages::$CheckInput . ' for error no.3 in : '.$index);
 			
 			}
 		}
