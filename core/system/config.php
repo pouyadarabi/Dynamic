@@ -34,7 +34,8 @@ return array(
     'CheckPermissions' => TRUE ,
     'ForbiddenByDefault' => TRUE,
     'AntiCsrf' => TRUE,
-    'CsrfTokenName' => '__pctk'
+    'CsrfTokenName' => '__pctk'و
+	'DefualtPerm' => 'guest'
 
 
 );

@@ -18,7 +18,6 @@ class db extends libs{
 	       $this->connect ();
 	    return $this->pdo;
 	}
-	
 	public function connect($DbName = false,$DbHost = false,$DbUser = false,$DbPass = false) {
 		try {
 		
@@ -52,8 +51,6 @@ class db extends libs{
 		if ($result == false) {
 		   
 			// Log Error
-			//echo 'Error';
-		//	die;
 		}
 		$this->res = $result;
 		return $result;
@@ -85,9 +82,6 @@ class db extends libs{
 			$values [$field] = $val;
 		
 		$stmt = "INSERT INTO `" . $table . "` (`" . implode ( array_keys ( $values ), "`, `" ) . "`) VALUES (" . implode ( $values, "," ) . ")";
-		//var_dump($stmt);
-		
-		
 		if ($this->query ( $stmt, $myarr )) {
 			return true;
 		} else
@@ -103,7 +97,6 @@ class db extends libs{
 		$where = ($where) ? " WHERE " . $where : '';
 		$limit = ($limit) ? " LIMIT " . $limit : '';
 		$stmt = "SELECT " . $fields . $table . $where . $orderby . $limit;
-		//var_dump($stmt);
 		$res = $this->query ( $stmt, $myarr );
 		if ($res->rowCount () > 0) {
 			$rows = array ();
