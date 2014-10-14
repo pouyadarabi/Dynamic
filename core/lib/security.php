@@ -348,12 +348,40 @@ class Security extends libs{
         return md5( '$%*DynamicT0ken@#!' ) . substr( str_shuffle( str_repeat( "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", 10 ) ), 0, 10 );
     }
 
-    public static function CsrfTokenChecker( $input = '__pctk' )
+ 	public static function CsrfTokenChecker($location = 'p',$input = '__pctk' )
     {
-        if ( !isset ( $_POST [ $input ] ) || trim( $_POST [ $input ] ) == '' || $_SESSION [ 'Token' ] != $_POST [ $input ] ) {
+    	$array = array();
+    	
+    	switch ($location){
+    		case 'r':
+    			$array = $_POST;
+    			break;
+    		case 'g':
+    			$array = $_GET;
+    			break;
+    		case 'h':
+    			if (!function_exists('getallheaders')) {
+    				  function getallheaders() {
+    					    foreach ($_SERVER as $name => $value) {
+    						     if (substr($name, 0, 5) == 'HTTP_') {
+    							        $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+    							      }
+    							    }
+    							    return $headers;
+    							  }
+    			}
+    			$array  = getallheaders();
+    			break;
+    		default:
+    			$array = $_POST;
+    			break;			
+    	}
+    	
+        if ( !isset ( $array [ $input ] ) || trim( $array [ $input ] ) == '' || $_SESSION [ 'Token' ] != $array [ $input ] ) {
             die ( Messages::$CheckInput );
         }
     }
+    
 
     public static function MyCrypt( $passwd, &$salt = '' )
     {

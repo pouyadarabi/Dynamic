@@ -31,7 +31,10 @@ return array (
 		
 		'CheckPermissions' => TRUE,
 		'ForbiddenByDefault' => TRUE,
+		'DefualtPerm' => 'guest',
+		
 		'AntiCsrf' => TRUE,
+		'CsrfCheckMethods' => 'post', // all , post , get , put , ....
 		'CsrfTokenName' => '__pctk',
-		'DefualtPerm' => 'guest'
+		'CsrfTokenLocation' => 'h' // h => header , p => post , g => get , r => request
 );

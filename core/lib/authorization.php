@@ -14,10 +14,11 @@ class Authorization extends libs
         }
       	$REQUEST_METHOD =  strtolower($_SERVER[ 'REQUEST_METHOD' ]);
         $MethodPerm = Annotations::getMethodAnnotations( '\\app\\controller\\'.__REQ__CLASS__, __REQ__METHOD__ );
-        if ( !isset( $MethodPerm[ 'ignore' ] ) || !in_array( 'csrf', $MethodPerm[ 'ignore' ] ) ) {
-            if ( isset( $Perms[ 'logined' ] ) && $REQUEST_METHOD == 'post' ) {
-                if ( $GLOBALS['CONFIG'][ 'AntiCsrf' ] === TRUE ) {
-                    Session::CsrfTokenChecker( $GLOBALS['CONFIG'][ 'CsrfTokenName' ] );
+    	if ( !isset( $MethodPerm[ 'ignore' ] ) || !in_array( 'csrf', $MethodPerm[ 'ignore' ] ) ) {
+            if ( isset( $Perms[ 'logined' ] ) && $GLOBALS['CONFIG'][ 'AntiCsrf' ] === TRUE  ) {
+            	$Csrf_Method = explode(',',$GLOBALS['CONFIG'][ 'CsrfCheckMethods' ]);
+                if ( in_array(['all',$REQUEST_METHOD], $Csrf_Method) ) {
+                    Security::CsrfTokenChecker( $GLOBALS['CONFIG'][ 'CsrfTokenLocation' ],$GLOBALS['CONFIG'][ 'CsrfTokenName' ] );
                 }
             }
         }
