@@ -8,7 +8,7 @@ class Session extends libs
     public static function init()
     {
     	session_name($GLOBALS['CONFIG']['AppName']);
-    	ob_clean();
+    	
         if ( session_id() == '' )
             session_start();
         
