@@ -9,7 +9,7 @@ class Messages
     
     public static $MinPassLen = 'Pass Len Is Lower than 6 char';
     
-    public static $NoPermission = 'شما دسترسی انجام این عملات را ندارید :)';
+    public static $NoPermission = 'No Permission';
     
     public static $Faild = 'SomeThing Wrong';
 

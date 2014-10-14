@@ -189,7 +189,7 @@ class Security extends libs{
 
      public static function CheckInput( $Name, $Method, $Type = 2 )
     {
-        if ( $Method == MyConsts::$Request_POST ) {
+        if ( $Method == 'p' ) {
 
             $str = ( isset ( $_POST [ $Name ] ) ? $_POST [ $Name ] : '' );
         } else {
@@ -208,7 +208,10 @@ class Security extends libs{
 
     public static function CheckType( $str, $Type )
     {
-         if ($Type == 'd')
+    
+    	if ($Type == 's')
+    		return self::TypeString($str);
+        if ($Type == 'd')
             return self::TypeDate($str);
         if ($Type == 'i')
             return self::TypeInteger($str);
@@ -244,7 +247,10 @@ class Security extends libs{
             return false;
         }
     }
-
+    private static function TypeString( $str )
+    {
+    	return is_string($str);
+    }
     private static function TypeInteger( $id )
     {
         if ( trim( $id ) != '' && is_numeric( $id ) ) {
@@ -382,8 +388,9 @@ class Security extends libs{
             $str = urldecode( $str );
             if ( !preg_match( "|^[" . str_replace( array(  '\\-', '\-'  ), '-', preg_quote( $GLOBALS['CONFIG']['UrlAllowedChars'], '-' ) ) . "]+$|i", $str )) {
                 echo( '<h1>Bad Request</h1>' );
-                http_response_code( 400 );
-                die ();
+                if (function_exists('http_response_code'))
+                	http_response_code( 400 );
+                die;
             }
         }
 

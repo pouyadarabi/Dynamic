@@ -1,6 +1,7 @@
 <?php
 namespace core\system;
 
+use core\lib\Authorization;
 class router
 {
     public static function DoRoute()
@@ -22,7 +23,10 @@ class router
             $url_array [ 1 ] = 'index';
         }        
         define ( '__REQ__CLASS__', $url_array [0]);
-        define ( '__REQ__METHOD__', $url_array [1]);        
+        define ( '__REQ__METHOD__', $url_array [1]);    
+        if($GLOBALS['CONFIG']['CheckPermissions'] === TRUE){
+        	Authorization::DoAuthorization();
+        }    
         $classname = '\\app\\controller\\'.__REQ__CLASS__;	
     	 try {
         	$method = new \ReflectionMethod($classname, __REQ__METHOD__);
@@ -39,7 +43,8 @@ class router
 		$str = urldecode( $str );
     	if ( !preg_match( "|^[" . str_replace( array( '\\-', '\-' ), '-', preg_quote( $GLOBALS['CONFIG']['UrlAllowedChars'], '-' ) ) . "]+$|i", $str )) {
     		echo( '<h1>Bad Request</h1>' );
-    		http_response_code( 400 );
+    		if (function_exists('http_response_code'))
+    			http_response_code( 400 );
     		die;
     	}
     	

@@ -33,5 +33,5 @@ return array (
 		'ForbiddenByDefault' => TRUE,
 		'AntiCsrf' => TRUE,
 		'CsrfTokenName' => '__pctk',
-		'DefualtPerm' => 'guest' 
+		'DefualtPerm' => 'guest'
 );

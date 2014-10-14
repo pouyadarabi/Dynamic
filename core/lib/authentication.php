@@ -3,7 +3,7 @@ namespace core\lib;
 
 class Authentication
 {
-    public function SetPermissions( $PermissionNames )
+    public static function SetPermissions( $PermissionNames )
     {
         $perms = Session::get('Perms');
         if ( is_array( $PermissionNames ) ) {

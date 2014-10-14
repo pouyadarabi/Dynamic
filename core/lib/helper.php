@@ -36,7 +36,7 @@ class Helper extends libs{
 		for($i = 0; $i < $count; $i ++) {
 			if ($array [$i] != null) {
 				$new [] = array_filter ( $array [$i], 'strlen' );
-				;
+				
 			}
 		}
 		return $new;
@@ -234,7 +234,7 @@ class Helper extends libs{
 			return $object->$key;
 		else {
 			if ($require === true)
-				$this->PrintLast ( Messages::$CheckInput );
+				self::PrintLast ( Messages::$CheckInput );
 			else
 				return $value;
 		}
@@ -276,7 +276,7 @@ class Helper extends libs{
 				;
 				break;
 		}
-		exit ();
+		exit;
 	}
 	
 	/**

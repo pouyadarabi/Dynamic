@@ -7,7 +7,8 @@ class AbstractClass
         if ( !$isError )
             echo $msg;
         else {
-            http_response_code( 500 );
+        	if (function_exists('http_response_code'))
+            	http_response_code( 500 );
             echo $msg;
         }
         die;

@@ -567,7 +567,7 @@ class MyDate
 
     public static function Gregorian2Jalali ($_entered_date, $delimiter = '-')
     {	
-    	if (Security::CheckType($_entered_date, MyConsts::$Type_Date)  === false) {
+    	if (Security::CheckType($_entered_date, 'd')  === false) {
             return '';
         }
         $delimiter = '-';
@@ -593,7 +593,7 @@ class MyDate
     public static function Jalali2Gregorian ($_entered_date, $delimiter = '/')
     {
         
-        if (Security::CheckType($_entered_date, MyConsts::$Type_Date)  === false) {
+        if (Security::CheckType($_entered_date, 'd')  === false) {
             return '';
         }
         $dt = explode(' ', $_entered_date);

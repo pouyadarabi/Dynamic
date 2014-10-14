@@ -8,11 +8,14 @@ class Authorization extends libs
     	
         $Perms = Session::get('Perms');
         
-        if ( empty( $Perms ) )
+        if ( empty( $Perms ) ){
         	Session::__setArray( 'Perms', $GLOBALS['CONFIG']['DefualtPerm'] );
-        $MethodPerm = Annotations::getMethodAnnotations( 'controller_' . __REQ__CLASS__, __REQ__METHOD__ );
+        	$Perms = array($GLOBALS['CONFIG']['DefualtPerm']);
+        }
+      	$REQUEST_METHOD =  strtolower($_SERVER[ 'REQUEST_METHOD' ]);
+        $MethodPerm = Annotations::getMethodAnnotations( '\\app\\controller\\'.__REQ__CLASS__, __REQ__METHOD__ );
         if ( !isset( $MethodPerm[ 'ignore' ] ) || !in_array( 'csrf', $MethodPerm[ 'ignore' ] ) ) {
-            if ( isset( $Perms[ 'logined' ] ) && strtolower( $_SERVER[ 'REQUEST_METHOD' ] ) == 'post' ) {
+            if ( isset( $Perms[ 'logined' ] ) && $REQUEST_METHOD == 'post' ) {
                 if ( $GLOBALS['CONFIG'][ 'AntiCsrf' ] === TRUE ) {
                     Session::CsrfTokenChecker( $GLOBALS['CONFIG'][ 'CsrfTokenName' ] );
                 }
@@ -24,7 +27,8 @@ class Authorization extends libs
             }
         }
 
-        if ( isset( $MethodPerm[ 'method' ] ) && strtolower( $_SERVER[ 'REQUEST_METHOD' ] ) != strtolower( $MethodPerm[ 'method' ][ 0 ] ) )
+
+        if ( isset( $MethodPerm[ 'method' ] ) && !in_array($REQUEST_METHOD, $MethodPerm[ 'method' ] ) )
             Helper::RaiseError( 404, $_SERVER['REQUEST_URI'] );
 
         $MethodPerm = $MethodPerm[ 'perm' ];

@@ -8,12 +8,12 @@ class Application
         $GLOBALS['CONFIG'] =  include dirname( __FILE__ ).'/config.php';
          
         self::SecurityHeader();
-        self::CheckReporting($GLOBALS['CONFIG']['DebugMode']);    
+        self::CheckReporting();    
         $DynamicRoot = self::getSitePath();
         define( '__Dynamic_PATH__',$DynamicRoot );
         define( '__APP_PATH__', __SITE_PATH__.'/app' );
         define( '__View_PATH__', __APP_PATH__ . '/view/' );
-        
+        session_name($GLOBALS['CONFIG']['AppName']);
         router::DoRoute();
        
     }
@@ -26,8 +26,9 @@ class Application
         header( "Content_security_policy : default-src 'self' style-src 'self' 'unsafe-inline';" );
     }
 
-    public static function CheckReporting($status)
+    public static function CheckReporting()
     {
+    	$status = $GLOBALS['CONFIG']['DebugMode'];
         if ($status === TRUE ) {
             error_reporting( E_ALL );
             ini_set( 'display_errors', 'On' );

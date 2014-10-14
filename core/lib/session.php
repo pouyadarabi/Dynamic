@@ -53,14 +53,16 @@ class Session extends libs
         $_SESSION = array();
     }
 
-    public static function __get( $index )
+    public static function get( $index )
     {
     	if(!self::$inited)
     		self::init();
-        return Security::CleanXssString( $_SESSION[ $index ] );
+    	if(isset($_SESSION[ $index ]))
+        	return Security::CleanXssString( $_SESSION[ $index ] );
+    	return '';
     }
 
-    public static function __set( $index, $value )
+    public static function set( $index, $value )
     {
     	if(!self::$inited)
     		self::init();
