@@ -6,8 +6,7 @@ class Authorization extends libs
     public static function DoAuthorization()
     {
     	
-        $Perms = Session::get('Perms');
-        
+        $Perms = Session::get('Perms');       
         if ( empty( $Perms ) ){
         	Session::__setArray( 'Perms', $GLOBALS['CONFIG']['DefualtPerm'] );
         	$Perms = array($GLOBALS['CONFIG']['DefualtPerm']);
