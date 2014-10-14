@@ -29,7 +29,7 @@ return array (
 		
 		// / Method Permissions
 		
-		'CheckPermissions' => TRUE,
+		'CheckPermissions' => FALSE,
 		'ForbiddenByDefault' => TRUE,
 		'DefualtPerm' => 'guest',
 		
