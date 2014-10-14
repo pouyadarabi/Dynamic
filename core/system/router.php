@@ -7,10 +7,8 @@ class router
     public static function DoRoute()
     {
        	if(!empty($_SERVER [ 'QUERY_STRING' ]) && !empty($GLOBALS['CONFIG']['UrlAllowedChars']))
-        	self::filter_uri( $_SERVER [ 'QUERY_STRING' ] );  
-        
-       	
-        $url = parse_url ($_SERVER ['REQUEST_URI'], PHP_URL_PATH );
+        	self::filter_uri( $_SERVER [ 'QUERY_STRING' ] );
+		$url = parse_url ($_SERVER ['REQUEST_URI'], PHP_URL_PATH );
         $root = __Dynamic_PATH__;
         $url_string = strtolower(trim(str_replace($root, '', $url),'/'));
         $url_array = explode('/',$url_string);
