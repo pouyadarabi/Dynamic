@@ -7,8 +7,10 @@ class Session extends libs
 	
     public static function init()
     {
+    	session_name($GLOBALS['CONFIG']['AppName']);
         if ( session_id() == '' )
             session_start();
+        
         if ( isset( $_SESSION[ 'fingerprint' ] ) ) {
             $var = false;
             if ( $GLOBALS['CONFIG'][ 'Session_Secure' ] ) {

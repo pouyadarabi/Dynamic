@@ -13,7 +13,7 @@ class Application
         define( '__Dynamic_PATH__',$DynamicRoot );
         define( '__APP_PATH__', __SITE_PATH__.'/app' );
         define( '__View_PATH__', __APP_PATH__ . '/view/' );
-        session_name($GLOBALS['CONFIG']['AppName']);
+        
         router::DoRoute();
        
     }
