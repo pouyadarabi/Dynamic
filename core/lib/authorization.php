@@ -17,7 +17,7 @@ class Authorization extends libs
     	if ( !isset( $MethodPerm[ 'ignore' ] ) || !in_array( 'csrf', $MethodPerm[ 'ignore' ] ) ) {
             if ( isset( $Perms[ 'logined' ] ) && $GLOBALS['CONFIG'][ 'AntiCsrf' ] === TRUE  ) {
             	$Csrf_Method = explode(',',$GLOBALS['CONFIG'][ 'CsrfCheckMethods' ]);
-                if ( in_array(['all',$REQUEST_METHOD], $Csrf_Method) ) {
+                if ( in_array(array('all',$REQUEST_METHOD), $Csrf_Method) ) {
                     Security::CsrfTokenChecker( $GLOBALS['CONFIG'][ 'CsrfTokenLocation' ],$GLOBALS['CONFIG'][ 'CsrfTokenName' ] );
                 }
             }
