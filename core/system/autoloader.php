@@ -1,8 +1,4 @@
 <?php
-function __autoload($class) {
-	if (class_exists ( $class, false )) {
-		return true;
-	}
- 	require  __SITE_PATH__ . '/' . str_replace('\\', '/', strtolower ( $class ))  . '.php';
-	return true;
-}
+
+spl_autoload_extensions('.php');
+spl_autoload_register();

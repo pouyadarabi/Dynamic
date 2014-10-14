@@ -11,22 +11,22 @@ class Request extends libs{
 			if( $Length !== FALSE)
 				if( (is_string ( $input ) && (strlen ( $input ) > $Length[1] || strlen ( $input ) < $Length[0])))
 					if($Required)
-						$this->PrintLast ( Messages::$CheckInput . ' for error no.1 in : '.$index);
+						$this->PrintLast ( Messages::$CheckInput);
 			if($Range !== FALSE){
 				if($input < $Range[0] || $input > $Range[1] )
 					if($Required)
-						$this->PrintLast ( Messages::$CheckInput. ' for error no.2 in : '.$index);
+						$this->PrintLast ( Messages::$CheckInput );
 				
 			}
 			if($Cases !== FALSE){
 				if(!in_array($input, $Cases))
 					if($Required)
-						$this->PrintLast ( Messages::$CheckInput . ' for error no.3 in : '.$index);
+						$this->PrintLast ( Messages::$CheckInput );
 			
 			}
 		}
 		if ($Required === TRUE && $Check === FALSE) {
-			$this->PrintLast ( Messages::$CheckInput . ' for error no.4 in : '.$index);
+			$this->PrintLast ( Messages::$CheckInput);
 		}
 		if ($Clean === TRUE && $Check === TRUE) {
 			return Security::CleanXssString ( $Req [$index]);

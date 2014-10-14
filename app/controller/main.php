@@ -8,6 +8,7 @@ class Main extends Controller {
      * @perm(guest)
      */
     public function index() {
+    	
     	Template::Show('main');
 	}
 
