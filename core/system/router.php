@@ -28,7 +28,6 @@ class router
         }    
         $classname = '\\app\\controller\\'.__REQ__CLASS__;	
     	 try {
-    	 	ob_clean();
         	$method = new \ReflectionMethod($classname, __REQ__METHOD__);
         	$method->invoke(new $classname);
     	 } catch (\ReflectionException $e) {

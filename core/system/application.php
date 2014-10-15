@@ -6,7 +6,6 @@ class Application
     public static function initialize()
     {
         $GLOBALS['CONFIG'] =  include dirname( __FILE__ ).'/config.php';
-        ob_start();
         self::SecurityHeader();
         self::CheckReporting();    
         $DynamicRoot = self::getSitePath();
