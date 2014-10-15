@@ -22,20 +22,20 @@ class Request extends libs {
 			if ($Length !== FALSE)
 				if ((is_string ( $input ) && (strlen ( $input ) > $Length [1] || strlen ( $input ) < $Length [0])))
 					if ($Required)
-						$this->PrintLast ( Messages::$CheckInput );
+						$this->PrintLast ( Messages::get('checkinput') );
 			if ($Range !== FALSE) {
 				if ($input < $Range [0] || $input > $Range [1])
 					if ($Required)
-						$this->PrintLast ( Messages::$CheckInput );
+						$this->PrintLast ( Messages::get('checkinput') );
 			}
 			if ($Cases !== FALSE) {
 				if (! in_array ( $input, $Cases ))
 					if ($Required)
-						$this->PrintLast ( Messages::$CheckInput );
+						$this->PrintLast ( Messages::get('checkinput') );
 			}
 		}
 		if ($Required === TRUE && $Check === FALSE) {
-			$this->PrintLast ( Messages::$CheckInput );
+			$this->PrintLast ( Messages::get('checkinput') );
 		}
 		if ($Clean === TRUE && $Check === TRUE) {
 			return Security::CleanXssString ( $Req [$index] );

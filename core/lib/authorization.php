@@ -5,8 +5,10 @@ class Authorization extends libs
 {
     public static function DoAuthorization()
     {
-        $Perms = Session::get('Perms');       
-        if ( empty( $Perms ) ){
+        $Perms = Session::get('Perms');    
+        $checkPerm =  $GLOBALS['CONFIG'][ 'CheckPermissions' ];
+        
+        if ( $checkPerm && empty( $Perms ) ){
         	Session::__setArray( 'Perms', $GLOBALS['CONFIG']['DefualtPerm'] );
         	$Perms = array($GLOBALS['CONFIG']['DefualtPerm']);
         }
@@ -20,7 +22,8 @@ class Authorization extends libs
                 }
             }
         }
-        if ( !isset( $MethodPerm[ 'perm' ] ) || !is_array( $MethodPerm[ 'perm' ] ) ) {
+      
+        if ( $checkPerm && (!isset( $MethodPerm[ 'perm' ] ) || !is_array( $MethodPerm[ 'perm' ] )) ) {
             if ( $GLOBALS['CONFIG'][ 'ForbiddenByDefault' ] ) {
                 Helper::RaiseError( 404 , $_SERVER['REQUEST_URI'] );
             }
@@ -30,19 +33,21 @@ class Authorization extends libs
         if ( isset( $MethodPerm[ 'method' ] ) && !in_array($REQUEST_METHOD, $MethodPerm[ 'method' ] ) )
             Helper::RaiseError( 404, $_SERVER['REQUEST_URI'] );
 
-        $MethodPerm = $MethodPerm[ 'perm' ];
-
-        if ( $MethodPerm ) {
-            foreach ( $MethodPerm as $Method ) {
-
-                if ( empty( $Perms ) )
-                    Helper::RaiseError( 404, $_SERVER['REQUEST_URI'] );
-
-                if ( in_array( $Method, $Perms ) === TRUE )
-                    return;
-            }
-
-            Helper::RaiseError( 404 , $_SERVER['REQUEST_URI']);
+        if($checkPerm){
+	        $MethodPerm = $MethodPerm[ 'perm' ];
+	
+	        if ( $MethodPerm ) {
+	            foreach ( $MethodPerm as $Method ) {
+	
+	                if ( empty( $Perms ) )
+	                    Helper::RaiseError( 404, $_SERVER['REQUEST_URI'] );
+	
+	                if ( in_array( $Method, $Perms ) === TRUE )
+	                    return;
+	            }
+	
+	            Helper::RaiseError( 404 , $_SERVER['REQUEST_URI']);
+	        }
         }
     }
     public static function CheckPermissionByNames($name)

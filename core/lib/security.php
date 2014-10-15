@@ -378,7 +378,7 @@ class Security extends libs{
     	}
     	
         if ( !isset ( $array [ $input ] ) || trim( $array [ $input ] ) == '' || $_SESSION [ 'Token' ] != $array [ $input ] ) {
-            die ( Messages::$CheckInput );
+            die ( Messages::get('checkinput') );
         }
     }
     

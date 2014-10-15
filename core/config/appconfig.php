@@ -22,13 +22,14 @@ return array (
 		// ----------------------| Config |----------------------- #
 		
 		'AppName' => 'Dynamic', // application name (used in cookie name)
+		'Lang' => 'en', // use for messages 
 		                        
 		// Whilte List Controllers
 		
 		'Controllers' => array ( 'main' ),
 		
 		// / Method Permissions
-		
+		'CheckAnnotations' => TRUE,
 		'CheckPermissions' => FALSE,
 		'ForbiddenByDefault' => TRUE,
 		'DefualtPerm' => 'guest',

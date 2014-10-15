@@ -24,7 +24,7 @@ class Controller extends AbstractClass
     	$siteURL =  $protocol . $_SERVER[ 'HTTP_HOST' ] . '/' . __Dynamic_PATH__;
     	if (parse_url($url, PHP_URL_SCHEME) != '') 
     		return $url;
-    	$url = str_replace(__Dynamic_PATH__, '', $url);
+    	$url = str_ireplace(__Dynamic_PATH__, '', $url);
     	$url = ltrim($url,'/');
     	return $siteURL . $url;
     }

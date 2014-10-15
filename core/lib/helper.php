@@ -86,61 +86,61 @@ class Helper extends libs{
 	}
 	public static function initUpload($fileElementName, $fileSize, $exten = false) {
 		if (! isset ( $_FILES [$fileElementName] ))
-			self::PrintLast ( Messages::$FileUpload_Nofile );
+			self::PrintLast ( Messages::get('FileUpload_Nofile') );
 		
 		if (($_FILES [$fileElementName] ['error'] != 0)) {
 			switch ($_FILES [$fileElementName] ['error']) {
 				
 				case '1' :
-					$error = Messages::$FileUpload_MaxPHP;
+					$error = Messages::get('FileUpload_MaxPHP');
 					break;
 				case '2' :
-					$error = Messages::$FileUpload_HTML;
+					$error = Messages::get('FileUpload_HTML');
 					break;
 				case '3' :
-					$error = Messages::$FileUpload_Partially;
+					$error = Messages::get('FileUpload_Partially');
 					break;
 				case '4' :
-					$error = Messages::$FileUpload_Nofile;
+					$error = Messages::get('FileUpload_Nofile');
 					break;
 				
 				case '6' :
-					$error = Messages::$FileUpload_MissingTemp;
+					$error = Messages::get('FileUpload_MissingTemp');
 					break;
 				case '7' :
-					$error = Messages::$FileUpload_WriteDisk;
+					$error = Messages::get('FileUpload_WriteDisk');
 					break;
 				case '8' :
-					$error = Messages::$FileUpload_BadExtention;
+					$error = Messages::get('FileUpload_BadExtention');
 					break;
 				case '999' :
 				default :
-					$error = Messages::$FileUpload_NoCode;
+					$error = Messages::get('FileUpload_NoCode');
 			}
 			self::PrintLast ( $error );
 		} elseif (empty ( $_FILES [$fileElementName] ['tmp_name'] ) || $_FILES [$fileElementName] ['tmp_name'] == 'none') {
-			self::PrintLast ( Messages::$FileUpload_Nofile );
+			self::PrintLast ( Messages::get('FileUpload_Nofile') );
 		} else {
 			$original_name = $_FILES [$fileElementName] ['name'];
 			$name = Security::getInstance ()->CleanUploadsChar ( $_FILES [$fileElementName] ['name'] );
 			$ext = strtolower ( substr ( $name, strlen ( $name ) - 3, 3 ) );
 			if ($ext == null || trim ( $ext ) == '') {
-				self::PrintLast ( Messages::$BypassKicked );
+				self::PrintLast ( Messages::get('BypassKicked') );
 			}
 			
 			$size = $_FILES [$fileElementName] ['size'] / 1024;
 			
 			if ($size > $fileSize) {
-				self::PrintLast ( Messages::$MaxSizeFile );
+				self::PrintLast ( Messages::get('MaxSizeFile') );
 			}
 			
 			if ($exten !== false) {
 				
 				if (is_array ( $exten )) {
 					if (! in_array ( $ext, $exten ))
-						self::PrintLast ( Messages::$FileUpload_BadExtention );
+						self::PrintLast ( Messages::get('FileUpload_BadExtention') );
 				} else if ($exten != $ext) {
-					self::PrintLast ( Messages::$FileUpload_BadExtention );
+					self::PrintLast ( Messages::get('FileUpload_BadExtention') );
 				}
 			}
 			return array (
@@ -151,66 +151,65 @@ class Helper extends libs{
 	}
 	public static function initMultiUpload($fileElementName, $fileSize, $exten, $max) {
 		if (! isset ( $_FILES [$fileElementName] ) || ! is_array ( $_FILES [$fileElementName] ['name'] ))
-			self::PrintLast ( Messages::$FileUpload_Nofile );
+			self::PrintLast ( Messages::get('FileUpload_Nofile') );
 		$count = count ( $_FILES [$fileElementName] ['name'] );
 		$files = array ();
 		if ($count > $max) {
-			self::PrintLast ( Messages::$MaxSizeFile );
+			self::PrintLast ( Messages::get('MaxSizeFile') );
 		}
 		for($i = 0; $i < $count; $i ++) {
 			if (($_FILES [$fileElementName] ['error'] [$i] != 0)) {
 				switch ($_FILES [$fileElementName] ['error'] [$i]) {
-					
 					case '1' :
-						$error = Messages::$FileUpload_MaxPHP;
+						$error = Messages::get('FileUpload_MaxPHP');
 						break;
 					case '2' :
-						$error = Messages::$FileUpload_HTML;
+						$error = Messages::get('FileUpload_HTML');
 						break;
 					case '3' :
-						$error = Messages::$FileUpload_Partially;
+						$error = Messages::get('FileUpload_Partially');
 						break;
 					case '4' :
-						$error = Messages::$FileUpload_Nofile;
+						$error = Messages::get('FileUpload_Nofile');
 						break;
 					
 					case '6' :
-						$error = Messages::$FileUpload_MissingTemp;
+						$error = Messages::get('FileUpload_MissingTemp');
 						break;
 					case '7' :
-						$error = Messages::$FileUpload_WriteDisk;
+						$error = Messages::get('FileUpload_WriteDisk');
 						break;
 					case '8' :
-						$error = Messages::$FileUpload_BadExtention;
+						$error = Messages::get('FileUpload_BadExtention');
 						break;
 					case '999' :
 					default :
-						$error = Messages::$FileUpload_NoCode;
+						$error = Messages::get('FileUpload_NoCode');
 				}
 				self::PrintLast ( $error );
 			} elseif (empty ( $_FILES [$fileElementName] ['tmp_name'] [$i] ) || $_FILES [$fileElementName] ['tmp_name'] [$i] == 'none') {
-				self::PrintLast ( Messages::$FileUpload_Nofile );
+				self::PrintLast ( Messages::get('FileUpload_Nofile') );
 			} else {
 				$original_name = $_FILES [$fileElementName] ['name'] [$i];
 				$name = Security::getInstance ()->CleanUploadsChar ( $_FILES [$fileElementName] ['name'] [$i] );
 				$ext = strtolower ( substr ( $name, strlen ( $name ) - 3, 3 ) );
 				if ($ext == null || trim ( $ext ) == '') {
-					self::PrintLast ( Messages::$BypassKicked );
+					self::PrintLast ( Messages::get('BypassKicked') );
 				}
 				
 				$size = $_FILES [$fileElementName] ['size'] [$i] / 1024;
 				
 				if ($size > $fileSize) {
-					self::PrintLast ( Messages::$MaxSizeFile );
+					self::PrintLast ( Messages::get('MaxSizeFile') );
 				}
 				
 				if ($exten !== false) {
 					
 					if (is_array ( $exten )) {
 						if (! in_array ( $ext, $exten ))
-							self::PrintLast ( Messages::$FileUpload_BadExtention );
+							self::PrintLast ( Messages::get('FileUpload_BadExtention') );
 					} else if ($exten != $ext) {
-						self::PrintLast ( Messages::$FileUpload_BadExtention );
+						self::PrintLast ( Messages::get('FileUpload_BadExtention') );
 					}
 				}
 				$files [] = array (
@@ -234,7 +233,7 @@ class Helper extends libs{
 			return $object->$key;
 		else {
 			if ($require === true)
-				self::PrintLast ( Messages::$CheckInput );
+				self::PrintLast ( Messages::get('checkinput') );
 			else
 				return $value;
 		}

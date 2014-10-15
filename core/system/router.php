@@ -10,11 +10,12 @@ class router
         
         $url = parse_url ( urldecode($_SERVER ['REQUEST_URI']), PHP_URL_PATH );
         $root = __Dynamic_PATH__;
-        $url_string = strtolower(trim(str_replace($root, '', $url),'/'));
+        $url_string = strtolower(trim(str_ireplace($root, '', $url),'/'));
         $url_array = explode('/',$url_string);
         if ( empty( $url_string )) {
             $url_array [0] = 'main';
-        }    
+        }
+        
         if ( !self::ControllerIsValid( $url_array [0] ) ) {
             $url_array [0] = 'notfound';
         }    
@@ -23,7 +24,7 @@ class router
         }        
         define ( '__REQ__CLASS__', $url_array [0]);
         define ( '__REQ__METHOD__', $url_array [1]);    
-        if($GLOBALS['CONFIG']['CheckPermissions'] === TRUE){
+        if($GLOBALS['CONFIG']['CheckAnnotations'] === TRUE){
         	Authorization::DoAuthorization();
         }    
         $classname = '\\app\\controller\\'.__REQ__CLASS__;	
