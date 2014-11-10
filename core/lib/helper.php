@@ -144,6 +144,7 @@ class Helper extends libs{
 				}
 			}
 			return array (
+					'file' => $_FILES [$fileElementName] ['tmp_name'] [$i],
 					'name' => $name,
 					'ext' => $ext 
 			);
@@ -214,6 +215,7 @@ class Helper extends libs{
 				}
 				$files [] = array (
 						'file' => $_FILES [$fileElementName] ['tmp_name'] [$i],
+						'name' => $name,
 						'ext' => $ext 
 				);
 			}
