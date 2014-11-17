@@ -6,6 +6,9 @@ class Authentication
     public static function SetPermissions( $PermissionNames )
     {
         $perms = Session::get('Perms');
+        if(empty($perms)){
+        	$perms = array();
+        }
         if ( is_array( $PermissionNames ) ) {
             foreach ( $PermissionNames as $Perm ) {
                 if ( !in_array( $Perm, $perms) )

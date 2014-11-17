@@ -53,7 +53,7 @@ class Authorization extends libs
     public static function CheckPermissionByNames($name)
     {
     	$perms = Session::get('Perms');
-    	if ( in_array( $name, $perms) )
+    	if (!empty($perms) && in_array( $name, $perms) )
     		return true;
     	return false;
     }
