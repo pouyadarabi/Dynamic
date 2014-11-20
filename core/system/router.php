@@ -18,6 +18,7 @@ class router
         
         if ( !self::ControllerIsValid( $url_array [0] ) ) {
             $url_array [0] = 'notfound';
+            $url_array [1] = 'index';
         }    
         if ( empty( $url_array[1] ) ) {
             $url_array [ 1 ] = 'index';
