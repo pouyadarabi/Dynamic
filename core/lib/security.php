@@ -113,9 +113,7 @@ class Security extends libs{
             '.',
             '%',
             '\\',
-            '../',
-            "http://",
-            "php"
+            ":"
         );
         if ( is_array( $page ) ) {
             foreach ( $page as $index => $value ) {
@@ -209,22 +207,22 @@ class Security extends libs{
     public static function CheckType( $str, $Type )
     {
     
-    	if ($Type == 's')
+    	if (!is_array($str) && $Type == 's')
     		return self::TypeString($str);
-        if ($Type == 'd')
+        if (!is_array($str) && $Type == 'd')
             return self::TypeDate($str);
-        if ($Type == 'i')
+        if (!is_array($str) && $Type == 'i')
             return self::TypeInteger($str);
-        if ($Type == 'e')
+        if (!is_array($str) && $Type == 'e')
             return self::TypeEmail($str);
-        if ($Type == 'na')
-            return self::TypeNumArray($str);
-        if ($Type == 'j')
+        if (!is_array($str) && $Type == 'j')
             return self::TypeJson($str);
-        if ($Type == 'o')
+        if (!is_array($str) && $Type == 'o')
             return self::TypeObject($str);
         if ($Type == 'oa')
             return self::TypeObjectArray($str);
+        if ($Type == 'na')
+        	return self::TypeNumArray($str);
         
         return false;
     }
