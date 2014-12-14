@@ -2,8 +2,8 @@
 return array (
 		
 		// ------------------------| Config |--------------------------- #
-		'DebugMode' => TRUE,
-		'SqlErrorDetais' => FALSE,
+		'DebugMode' => true, // set it to false when you want publish application
+		'SqlErrorDetais' => false,
 		
 		// --------------------------| DB |----------------------------- #
 		'DbName' => 'DB_NAME', // Db Name
@@ -15,9 +15,9 @@ return array (
 		'Blowfish_Pre' => '$6$rounds=>5000$', // blowfish for CRYPT_SHA256 encryption (php.net/manual/en/function.crypt.php)
 		'Blowfish_End' => '$', // blowfish for encryption
 		'UrlAllowedChars' => 'a-z 0-9~%.:_\-=&', // Allowed chars in url
-		'Session_IPCheck' => FALSE,
-		'Session_UserAgentCheck' => FALSE,
-		'Session_Secure' => TRUE, // check user agent and ip
+		'Session_IPCheck' => false,
+		'Session_UserAgentCheck' => false,
+		'Session_Secure' => false, // check user agent and ip ,set it to true when you don't use cli
 		                          
 		// ----------------------| Config |----------------------- #
 		
@@ -29,12 +29,12 @@ return array (
 		'Controllers' => array ( 'main' ),
 		
 		// / Method Permissions
-		'CheckAnnotations' => TRUE,
-		'CheckPermissions' => FALSE,
-		'ForbiddenByDefault' => TRUE,
+		'CheckAnnotations' => true,
+		'CheckPermissions' => false,
+		'ForbiddenByDefault' => true,
 		'DefualtPerm' => 'guest',
 		
-		'AntiCsrf' => TRUE,
+		'AntiCsrf' => true,
 		'CsrfCheckMethods' => 'post', // all , post , get , put , ....
 		'CsrfTokenName' => '__pctk',
 		'CsrfTokenLocation' => 'h' // h => header , p => post , g => get , r => request
