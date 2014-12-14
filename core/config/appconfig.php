@@ -29,7 +29,7 @@ return array (
 		'Controllers' => array ( 'main' ),
 		
 		// / Method Permissions
-		'CheckAnnotations' => true,
+		'CheckAnnotations' => false,
 		'CheckPermissions' => false,
 		'ForbiddenByDefault' => true,
 		'DefualtPerm' => 'guest',
