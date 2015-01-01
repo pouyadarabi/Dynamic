@@ -28,7 +28,6 @@ class db extends libs{
 			
 			$this->pdo->exec ( 'SET NAMES utf8' );
 			$this->pdo->setAttribute ( \PDO::ATTR_EMULATE_PREPARES, FALSE );
-		//	$this->pdo->setAttribute(PDO::ATTR_AUTOCOMMIT, FALSE);
 			if ($GLOBALS['CONFIG']['SqlErrorDetais'])
 				$this->pdo->setAttribute ( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
 		} catch ( \Exception $e ) {
@@ -43,9 +42,7 @@ class db extends libs{
 	}
 	
 	public function query($query, array $myarr = NULL) {
-	 //  var_dump($query,$myarr);
 		$result = $this->pdo->prepare ( $query );
-		//var_dump($result);
 		$result->execute ( $myarr );
 		
 		if ($result == false) {
@@ -99,11 +96,22 @@ class db extends libs{
 		$stmt = "SELECT " . $fields . $table . $where . $orderby . $limit;
 		$res = $this->query ( $stmt, $myarr );
 		if ($res->rowCount () > 0) {
-			$rows = array ();
-			while ( $r = $res->fetch ( \PDO::FETCH_ASSOC ) )
-				$rows [] = $r;
-			
-			return $rows;
+			return $res->fetchAll(\PDO::FETCH_ASSOC);
+		} else
+			return false;
+	}
+	public function selectValues($fields, $table = false, $where = false, $orderby = false, $limit = false, array $myarr = NULL) {
+		if (is_array ( $fields ))
+			$fields = "`" . implode ( $fields, "`, `" ) . "`";
+	
+		$orderby = ($orderby) ? " ORDER BY " . $orderby : '';
+		$table = ($table) ? " FROM " . $table : '';
+		$where = ($where) ? " WHERE " . $where : '';
+		$limit = ($limit) ? " LIMIT " . $limit : '';
+		$stmt = "SELECT " . $fields . $table . $where . $orderby . $limit;
+		$res = $this->query ( $stmt, $myarr );
+		if ($res->rowCount () > 0) {
+			return $res->fetchAll(\PDO::FETCH_NUM);
 		} else
 			return false;
 	}
