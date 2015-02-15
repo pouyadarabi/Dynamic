@@ -34,9 +34,11 @@ class GET extends Request
         $url = str_ireplace(array(__REQ__METHOD__,__REQ__CLASS__,__Dynamic_PATH__), '', urldecode($url));
         $url = ltrim($url, '/');
         
+       
         if ($this->Required && $url == '') {
             $this->PrintLast(Messages::get('CheckInput'));
         }
+      
         if ($this->Type === false)
             $type = (isset($this->TypeArray[$this->MyCounter]) ? $this->TypeArray[$this->MyCounter ++] : 's');
         else
@@ -54,18 +56,26 @@ class GET extends Request
     {
         $response = true;
         
-        if (! is_array($data) && trim($data) == '') {
-            $response = false;
+        if (! is_array($data)){
+            if (trim($data) == '') {
+                if($this->Required){
+                    $response = false;
+                }
+                else{
+                    return '';
+                }
+            }
         }
-        
         if ($response){
             if (Security::CheckType($data, $VarType) === false) {
                 $response = false;
             }
+         
             if ($this->Length !== false){
                 if ((is_string ( $data ) && (strlen ( $data ) > $this->Length [1] || strlen ( $data ) < $this->Length [0])))
                     $response = false;
             }
+           
             if ($this->Range !== false) {
                 if ($data < $this->Range [0] || $data > $this->Range [1])
                     $response = false;
@@ -75,7 +85,7 @@ class GET extends Request
                     $response = false;
             }
         }
-        if ( $this->Required === true && $response === false) {
+        if ($response === false) {
             $this->PrintLast(Messages::get('CheckInput'));
         }
         if ($this->Clean === true && $response === true) {
