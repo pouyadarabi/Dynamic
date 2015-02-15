@@ -37,5 +37,11 @@ return array (
 		'AntiCsrf' => true,
 		'CsrfCheckMethods' => 'post', // all , post , get , put , ....
 		'CsrfTokenName' => '__pctk',
-		'CsrfTokenLocation' => 'h' // h => header , p => post , g => get , r => request
+		'CsrfTokenLocation' => 'h', // h => header , p => post , g => get , r => request
+		        
+        
+        // ----------------------| Route |----------------------- #
+        'DefualtController' => 'main',
+        'DefualtAction' => 'index',
+        
 );
