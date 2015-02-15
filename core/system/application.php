@@ -6,13 +6,15 @@ class Application
     public static function initialize()
     {
         $GLOBALS['CONFIG'] =  include dirname( __FILE__ ).'/../config/appconfig.php';
-        self::SecurityHeader();
-        self::CheckReporting();    
+        define('ISCLI', PHP_SAPI === 'cli');
         $DynamicRoot = self::getSitePath();
         define( '__Dynamic_PATH__',$DynamicRoot );
         define( '__APP_PATH__', __SITE_PATH__.'/app' );
         define( '__View_PATH__', __APP_PATH__ . '/view/' );
-        
+        define('__Defualt_Controller__', $GLOBALS['CONFIG']['DefualtController']);
+        define('__Defualt_Action__', $GLOBALS['CONFIG']['DefualtAction']);
+        self::SecurityHeader();
+        self::CheckReporting();
         router::DoRoute();
        
     }

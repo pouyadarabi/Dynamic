@@ -16,15 +16,15 @@ class router
 	        $url_array = explode('/',$url_string);
         }
         if ( empty( $url_string )) {
-            $url_array [0] = 'main';
+            $url_array [0] = __Defualt_Controller__;
         }
         
         if ( !self::ControllerIsValid( $url_array [0] ) ) {
             $url_array [0] = 'notfound';
-            $url_array [1] = 'index';
+            $url_array [1] = __Defualt_Action__;
         }    
         if ( empty( $url_array[1] ) ) {
-            $url_array [ 1 ] = 'index';
+            $url_array [ 1 ] = __Defualt_Action__;
         }        
         define ( '__REQ__CLASS__', $url_array [0]);
         define ( '__REQ__METHOD__', $url_array [1]);    

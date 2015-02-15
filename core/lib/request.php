@@ -5,13 +5,13 @@ namespace core\lib;
 use core\main\libs;
 
 class Request extends libs {
-	protected $Clean = TRUE;
-	protected $Required = TRUE;
+	protected $Clean = true;
+	protected $Required = true;
 	protected $TypeArray = array ();
 	protected $Type = false;
 	protected $MyCounter = 0;
-	protected $Range = FALSE;
-	protected $Cases = FALSE;
+	protected $Range = false;
+	protected $Cases = false;
 	protected $Length = array ( 0, 100 );
 	protected function getvar($index, $ReqType, $TypeArray, $Required, $Clean, $Length, $Range, $Cases) {
 		$Req = self::GetArrayByType ( $ReqType );
@@ -19,28 +19,30 @@ class Request extends libs {
 		$Check = $this->Check ( $index, $ReqType, $TypeArray );
 		if (isset ( $Req [$index] )) {
 			$input = $Req [$index];
-			if ($Length !== FALSE)
-				if ((is_string ( $input ) && (strlen ( $input ) > $Length [1] || strlen ( $input ) < $Length [0])))
-					if ($Required)
-						$this->PrintLast ( Messages::get('checkinput') );
-			if ($Range !== FALSE) {
-				if ($input < $Range [0] || $input > $Range [1])
-					if ($Required)
-						$this->PrintLast ( Messages::get('checkinput') );
+			
+			if ($Required && trim($input) == ''){	    
+			    $this->PrintLast ( Messages::get('checkinput') );
 			}
-			if ($Cases !== FALSE) {
+			if ($Length !== false){
+				if ((is_string ( $input ) && (strlen ( $input ) > $Length [1] || strlen ( $input ) < $Length [0])))
+				    $this->PrintLast ( Messages::get('checkinput') );
+			}
+			if ($Range !== false) {
+				if ($input < $Range [0] || $input > $Range [1])
+					$this->PrintLast ( Messages::get('checkinput') );
+			}
+			if ($Cases !== false) {
 				if (! in_array ( $input, $Cases ))
-					if ($Required)
-						$this->PrintLast ( Messages::get('checkinput') );
+					$this->PrintLast ( Messages::get('checkinput') );
 			}
 		}
-		if ($Required === TRUE && $Check === FALSE) {
+		if ($Required === true && $Check === false) {
 			$this->PrintLast ( Messages::get('checkinput') );
 		}
-		if ($Clean === TRUE && $Check === TRUE) {
+		if ($Clean === true && $Check === TRUE) {
 			return Security::CleanXssString ( $Req [$index] );
 		}
-		if ($Check === TRUE && isset ( $Req [$index] )) {
+		if ($Check === true && isset ( $Req [$index] )) {
 			return $Req [$index];
 		} else
 			return false;
