@@ -57,7 +57,9 @@ class GET extends Request
         if (! is_array($data) && trim($data) == '') {
             $response = false;
         }
-        
+        if ($this->Required && trim($data) == ''){
+            $this->PrintLast ( Messages::get('checkinput') );
+        }
         if ($response){
             if (Security::CheckType($data, $VarType) === false) {
                 $response = false;
@@ -75,7 +77,7 @@ class GET extends Request
                     $response = false;
             }
         }
-        if ( $this->Required === true && $response === false) {
+        if ($response === false) {
             $this->PrintLast(Messages::get('CheckInput'));
         }
         if ($this->Clean === true && $response === true) {
