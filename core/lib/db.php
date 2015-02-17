@@ -20,15 +20,15 @@ class db extends libs{
 	}
 	public function connect($DbName = false,$DbHost = false,$DbUser = false,$DbPass = false) {
 		try {
-		
+		    $config = Config::getAll();
 			if(!$DbName || !$DbHost || !$DbUser || !$DbPass)
-				$this->pdo = new \PDO ( 'mysql:dbname=' . $GLOBALS['CONFIG']['DbName'] . ';host=' . $GLOBALS['CONFIG']['DbHost'], $GLOBALS['CONFIG']['DbUser'], $GLOBALS['CONFIG']['DbPass'] );
+				$this->pdo = new \PDO ( 'mysql:dbname=' . $config['DbName'] . ';host=' . $config['DbHost'], $config['DbUser'], $config['DbPass'] );
 			else 
 				$this->pdo = new \PDO ( 'mysql:dbname=' . $DbName . ';host=' . $DbHost, $DbUser, $DbPass );
 			
 			$this->pdo->exec ( 'SET NAMES utf8' );
 			$this->pdo->setAttribute ( \PDO::ATTR_EMULATE_PREPARES, FALSE );
-			if ($GLOBALS['CONFIG']['SqlErrorDetais'])
+			if ($config['SqlErrorDetais'])
 				$this->pdo->setAttribute ( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
 		} catch ( \Exception $e ) {
 			trigger_error ( 'Could not connect to the database.', E_USER_ERROR );
@@ -187,5 +187,9 @@ class db extends libs{
 	    $res = $this->pdo->query('SELECT uuid()');
 	    $res = $res->fetch ( \PDO::FETCH_ASSOC );
 	    return $res['uuid()'];
+	}
+	public function count($table, $where = '', array $myarr = NULL)
+	{
+	    return $this->selectOneValue('count(*)',$table,$where,false,$myarr);
 	}
 }

@@ -7,20 +7,21 @@ class Session extends libs
 	
     public static function init()
     {
-    	session_name($GLOBALS['CONFIG']['AppName']);
+        $config = Config::getAll();
+    	session_name($config['AppName']);
     	
         if ( session_id() == '' )
             session_start();
         
         if ( isset( $_SESSION[ 'fingerprint' ] ) ) {
             $var = false;
-            if ( $GLOBALS['CONFIG'][ 'Session_Secure' ] ) {
+            if ( $config[ 'Session_Secure' ] ) {
                 $var = md5( $_SERVER[ 'HTTP_USER_AGENT' ] . '__+#@!%^+__' . $_SERVER[ 'REMOTE_ADDR' ] );
             } else {
-                if (  $GLOBALS['CONFIG'][ 'Session_UserAgentCheck' ] ) {
+                if (  $config[ 'Session_UserAgentCheck' ] ) {
                     $var = md5( $_SERVER[ 'HTTP_USER_AGENT' ] . '__+#@!%^+__' );
                 } else {
-                    if ( $GLOBALS['CONFIG'][ 'Session_IPCheck' ] ) {
+                    if ( $config[ 'Session_IPCheck' ] ) {
                         $var = md5( $_SERVER[ 'REMOTE_ADDR' ] . '__+#@!%^+__' );
                     }
                 }
@@ -32,13 +33,13 @@ class Session extends libs
 
 
         } else {
-            if ( $GLOBALS['CONFIG'][ 'Session_Secure' ] ) {
+            if ( $config[ 'Session_Secure' ] ) {
                 $_SESSION[ 'fingerprint' ] = md5( $_SERVER[ 'HTTP_USER_AGENT' ] . '__+#@!%^+__' . $_SERVER[ 'REMOTE_ADDR' ] );
             } else {
-                if ( $GLOBALS['CONFIG'][ 'Session_UserAgentCheck' ] ) {
+                if ( $config[ 'Session_UserAgentCheck' ] ) {
                     $_SESSION[ 'fingerprint' ] = md5( $_SERVER[ 'HTTP_USER_AGENT' ] . '__+#@!%^+__' );
                 } else {
-                    if ( $GLOBALS['CONFIG'][ 'Session_IPCheck' ] ) {
+                    if ( $config[ 'Session_IPCheck' ] ) {
                         $_SESSION[ 'fingerprint' ] = md5( $_SERVER[ 'REMOTE_ADDR' ] . '__+#@!%^+__' );
                     }
                 }

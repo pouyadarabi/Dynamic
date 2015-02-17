@@ -4,14 +4,6 @@ use core\main\libs;
 class Helper extends libs{	
 	/**
 	 *
-	 * @param string $PATH        	
-	 */
-	public static function Load($PATH) {
-		include_once $PATH;
-	}
-	
-	/**
-	 *
 	 * @param array $array        	
 	 * @return multitype:unknown
 	 */
@@ -144,7 +136,7 @@ class Helper extends libs{
 				}
 			}
 			return array (
-					'file' => $_FILES [$fileElementName] ['tmp_name'] [$i],
+					'file' => $_FILES [$fileElementName] ['tmp_name'],
 					'name' => $name,
 					'ext' => $ext 
 			);

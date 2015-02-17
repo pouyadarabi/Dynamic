@@ -5,12 +5,13 @@ class Authorization extends libs
 {
     public static function DoAuthorization()
     {        
-        $checkPerm =  $GLOBALS['CONFIG'][ 'CheckPermissions' ];
+        $config = Config::getAll();
+        $checkPerm = $config[ 'CheckPermissions' ];
       	if ( $checkPerm ){
       		$Perms = Session::get('Perms');
       		if ( empty( $Perms ) ){
-      			Session::__setArray( 'Perms', $GLOBALS['CONFIG']['DefualtPerm'] );
-      			$Perms = array($GLOBALS['CONFIG']['DefualtPerm']);
+      			Session::__setArray( 'Perms', $config['DefualtPerm'] );
+      			$Perms = array($config['DefualtPerm']);
       		}
       		
       		$REQUEST_METHOD =  strtolower($_SERVER[ 'REQUEST_METHOD' ]);
@@ -25,12 +26,12 @@ class Authorization extends libs
       		
       		
       		if ( !isset( $MethodPerm[ 'perm' ] ) || !is_array( $MethodPerm[ 'perm' ] ) ) {
-      			if ($forbidden && $GLOBALS['CONFIG'][ 'ForbiddenByDefault' ] ) {
+      			if ($forbidden && $config[ 'ForbiddenByDefault' ] ) {
       				Helper::RaiseError( 404 , $_SERVER['REQUEST_URI'] );
       			}
       		}
-      		self::CheckAnnotations($ClassPerm, $Perms, $REQUEST_METHOD);
-      		self::CheckAnnotations($MethodPerm, $Perms, $REQUEST_METHOD);
+      		self::CheckAnnotations($ClassPerm, $Perms, $REQUEST_METHOD,$config);
+      		self::CheckAnnotations($MethodPerm, $Perms, $REQUEST_METHOD,$config);
       		
       		
       		
@@ -44,17 +45,17 @@ class Authorization extends libs
     	return false;
     }
 
-	private static function CheckAnnotations($array,$Perms,$REQUEST_METHOD){
+	private static function CheckAnnotations($array,$Perms,$REQUEST_METHOD,$config){
 		if(!$array)
 			return ;
 		if ( isset( $array[ 'method' ] ) && !in_array($REQUEST_METHOD, $array[ 'method' ] ) )
 			Helper::RaiseError( 404, $_SERVER['REQUEST_URI'] );
 		
 		if ( !isset( $array[ 'ignore' ] ) || !in_array( 'csrf', $array[ 'ignore' ] ) ) {
-			if ( isset( $Perms[ 'logined' ] ) && $GLOBALS['CONFIG'][ 'AntiCsrf' ] === TRUE  ) {
-				$Csrf_Method = explode(',',$GLOBALS['CONFIG'][ 'CsrfCheckMethods' ]);
+			if ( isset( $Perms[ 'logined' ] ) && $config[ 'AntiCsrf' ] === TRUE  ) {
+				$Csrf_Method = explode(',',$config[ 'CsrfCheckMethods' ]);
 				if ( in_array(array('all',$REQUEST_METHOD), $Csrf_Method) ) {
-					Security::CsrfTokenChecker( $GLOBALS['CONFIG'][ 'CsrfTokenLocation' ],$GLOBALS['CONFIG'][ 'CsrfTokenName' ] );
+					Security::CsrfTokenChecker($config[ 'CsrfTokenLocation' ],$config[ 'CsrfTokenName' ] );
 				}
 			}
 		}

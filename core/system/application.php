@@ -1,35 +1,54 @@
 <?php
 namespace core\system;
 use core\system\router;
+use core\lib\Config;
 class Application
 {
     public static function initialize()
     {
-        $GLOBALS['CONFIG'] =  include dirname( __FILE__ ).'/../config/appconfig.php';
+        $config = Config::getAll();
         define('ISCLI', PHP_SAPI === 'cli');
+        
+        self::checkAllowedHosts($config['AllowedHosts']);
         $DynamicRoot = self::getSitePath();
         define( '__Dynamic_PATH__',$DynamicRoot );
         define( '__APP_PATH__', __SITE_PATH__.'/app' );
         define( '__View_PATH__', __APP_PATH__ . '/view/' );
-        define('__Defualt_Controller__', $GLOBALS['CONFIG']['DefualtController']);
-        define('__Defualt_Action__', $GLOBALS['CONFIG']['DefualtAction']);
+        define('__Defualt_Controller__', $config['DefualtController']);
+        define('__Defualt_Action__', $config['DefualtAction']);
+
         self::SecurityHeader();
-        self::CheckReporting();
+        self::CheckReporting($config['DebugMode']);
         router::DoRoute();
        
     }
-
-    public static function SecurityHeader()
+    /*
+     * fix Host header attack
+     */
+    private static function checkAllowedHosts($hosts){
+        if(ISCLI)
+            return;
+        if($hosts !== ''){
+            $host = $_SERVER['HTTP_HOST'];
+            $hosts = explode(',',$hosts);
+            if(!in_array($host,$hosts)){
+                die;
+            }
+        }
+    }
+    private static function SecurityHeader()
     {
+        if(ISCLI)
+            return;
+        
         header( 'X-Frame-Options: SameOrigin' );
         header( 'X-XSS-Protection: 1' );
         header( 'X-Powered-By: Dynamic' );
         header( "Content_security_policy : default-src 'self' style-src 'self' 'unsafe-inline';" );
     }
 
-    public static function CheckReporting()
+    private static function CheckReporting($status)
     {
-    	$status = $GLOBALS['CONFIG']['DebugMode'];
         if ($status === TRUE ) {
             error_reporting( E_ALL );
             ini_set( 'display_errors', 'On' );

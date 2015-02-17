@@ -17,7 +17,7 @@ class Authentication
         } else {
             Session::__setArray( 'Perms', $PermissionNames );
         }
-        if ( ( $key = array_search($GLOBALS['CONFIG']['DefualtPerm'],$perms ) ) !== false ) {
+        if ( ( $key = array_search( Config::get('DefualtPerm'),$perms ) ) !== false ) {
             Session::__unsetArray('Perms',$key);
         }
     }

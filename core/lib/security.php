@@ -392,50 +392,12 @@ class Security extends libs{
                 $salt .= $Allowed_Chars [ mt_rand( 0, $Chars_Len ) ];
             }
         }
-        $bcrypt_salt = $GLOBALS['CONFIG']['Blowfish_Pre'] . $salt . $GLOBALS['CONFIG']['Blowfish_End'];
+        $config = Config::getAll();
+        $bcrypt_salt = $config['Blowfish_Pre'] . $salt . $config['Blowfish_End'];
 
         $hashed_password = crypt( $passwd, $bcrypt_salt );
         return $hashed_password;
     }
 
-    /**
-     * Filter segments for malicious characters
-     *
-     * @access public
-     * @param
-     *            string
-     * @return string
-     */
-    public static function filter_uri( $str )
-    {
-        if ( $str != '' && $GLOBALS['CONFIG']['UrlAllowedChars'] != '' ) {
-            // preg_quote() in PHP 5.3 escapes -, so the str_replace() and addition of - to preg_quote() is to maintain backwards
-            // compatibility as many are unaware of how characters in the permitted_uri_chars will be parsed as a regex pattern
-            $str = urldecode( $str );
-            if ( !preg_match( "|^[" . str_replace( array(  '\\-', '\-'  ), '-', preg_quote( $GLOBALS['CONFIG']['UrlAllowedChars'], '-' ) ) . "]+$|i", $str )) {
-                echo( '<h1>Bad Request</h1>' );
-                if (function_exists('http_response_code'))
-                	http_response_code( 400 );
-                die;
-            }
-        }
-
-        // Convert programatic characters to entities
-        $bad = array(
-            '$',
-            '(',
-            ')',
-            '%28',
-            '%29'
-        );
-        $good = array(
-            '&#36;',
-            '&#40;',
-            '&#41;',
-            '&#40;',
-            '&#41;'
-        );
-
-        return str_replace( $bad, $good, $str );
-    }
+   
 }

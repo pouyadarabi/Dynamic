@@ -18,7 +18,7 @@ return array (
 		'Session_IPCheck' => false,
 		'Session_UserAgentCheck' => false,
 		'Session_Secure' => false, // check user agent and ip ,set it to true when you don't use cli
-		                          
+        'AllowedHosts' => '', // allowed hosts aplit by comma 
 		// ----------------------| Config |----------------------- #
 		
 		'AppName' => 'Dynamic', // application name (used in cookie name)
@@ -43,5 +43,7 @@ return array (
         // ----------------------| Route |----------------------- #
         'DefualtController' => 'main',
         'DefualtAction' => 'index',
+        
+        
         
 );

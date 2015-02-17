@@ -1,0 +1,26 @@
+{
+    "en": {
+        "CheckInput": "Check Input Data",
+        "NoPermission": "You do not have permission to perform this action",
+        "FileUpload_Nofile": "No file was uploaded..",
+        "FileUpload_MaxPHP": "The uploaded file exceeds the upload_max_filesize",
+        "FileUpload_HTML": "The uploaded file exceeds the MAX_FILE_SIZE",
+        "FileUpload_Partially": "The uploaded file was only partially uploaded",
+        "FileUpload_MissingTemp": "Missing a temporary folder",
+        "FileUpload_WriteDisk": "Failed to write file to disk",
+        "FileUpload_BadExtention": "File upload stopped by extension",
+        "FileUpload_NoCode": "No error code avaiable"
+    },
+    "fa": {
+        "CheckInput": "Check Input Data",
+        "NoPermission": "You do not have permission to perform this action",
+        "FileUpload_Nofile": "No file was uploaded..",
+        "FileUpload_MaxPHP": "The uploaded file exceeds the upload_max_filesize",
+        "FileUpload_HTML": "The uploaded file exceeds the MAX_FILE_SIZE",
+        "FileUpload_Partially": "The uploaded file was only partially uploaded",
+        "FileUpload_MissingTemp": "Missing a temporary folder",
+        "FileUpload_WriteDisk": "Failed to write file to disk",
+        "FileUpload_BadExtention": "File upload stopped by extension",
+        "FileUpload_NoCode": "No error code avaiable"
+    }
+}
