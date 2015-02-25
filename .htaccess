@@ -1,39 +1,22 @@
-# htacces By Pouya
-ErrorDocument 401 default
-ErrorDocument 403 default
-ErrorDocument 404 default
-ErrorDocument 500 default
-
-
-<Files ".ht*">
-deny from all
-</Files>
+# htaccess
+# Dynamic Mvc
+# Version 1.2
+# source: https://github.com/PouyaDarabi/Dynamic
 
 <IfModule mod_rewrite.c>
 
-	RewriteEngine On
-
-## Begin - Rewrite rules to block out some common exploits.
-# If you experience problems on your site block out the operations listed below
-# This attempts to block the most common type of exploit `attempts`
-#
-
+RewriteEngine On
 # Block out any script trying to base64_encode data within the URL.
 RewriteCond %{QUERY_STRING} base64_encode[^(]*\([^)]*\) [OR]
-
 # Block out any script that includes a <script> tag in URL.
 RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
-
 # Block out any script trying to set a PHP GLOBALS variable via URL.
 RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
-
 # Block out any script trying to modify a _REQUEST variable via URL.
 RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
-
 # Return 403 Forbidden header and show the content of the root homepage
 RewriteRule .* index.php [F]
 #
-## End - Rewrite rules to block out some common exploits.	
 
     # Check File
 	RewriteCond %{REQUEST_FILENAME} -f [OR]
@@ -45,6 +28,3 @@ RewriteRule .* index.php [F]
 	RewriteRule ^.*$ - [NC,L]
 	RewriteRule ^.*$ index.php [NC,L]
 </IfModule>
-
-# Limit access to localhost
-
