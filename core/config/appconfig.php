@@ -2,7 +2,7 @@
 return array (
 		
 		// ------------------------| Config |--------------------------- #
-		'DebugMode' => true, // set it to false when you want publish application
+		'DebugMode' => false, // set it to false when you want publish application
 		'SqlErrorDetais' => false,
 		
 		// --------------------------| DB |----------------------------- #
@@ -30,20 +30,17 @@ return array (
 		
 		// / Method Permissions
 		'CheckAnnotations' => false,
-		'CheckPermissions' => false,
 		'ForbiddenByDefault' => true,
 		'DefualtPerm' => 'guest',
 		
-		'AntiCsrf' => true,
+		'AntiCsrf' => false,
 		'CsrfCheckMethods' => 'post', // all , post , get , put , ....
 		'CsrfTokenName' => '__pctk',
 		'CsrfTokenLocation' => 'h', // h => header , p => post , g => get , r => request
-		        
+		'CheckCsrfOnPerm' => 'logined',        
         
         // ----------------------| Route |----------------------- #
         'DefualtController' => 'main',
-        'DefualtAction' => 'index',
-        
-        
+        'DefualtAction' => 'index',      
         
 );

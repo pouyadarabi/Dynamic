@@ -6,36 +6,28 @@ class Authorization extends libs
     public static function DoAuthorization()
     {        
         $config = Config::getAll();
-        $checkPerm = $config[ 'CheckPermissions' ];
-      	if ( $checkPerm ){
-      		$Perms = Session::get('Perms');
-      		if ( empty( $Perms ) ){
-      			Session::__setArray( 'Perms', $config['DefualtPerm'] );
-      			$Perms = array($config['DefualtPerm']);
-      		}
-      		
-      		$REQUEST_METHOD =  strtolower($_SERVER[ 'REQUEST_METHOD' ]);
-      		$forbidden = true;
-      		$ClassPerm = Annotations::getClassAnnotations( '\\app\\controller\\'.__REQ__CLASS__ );
-      		$MethodPerm = Annotations::getMethodAnnotations( '\\app\\controller\\'.__REQ__CLASS__, __REQ__METHOD__ );
-      		 
-      		if(isset( $ClassPerm[ 'perm' ] ) && is_array($ClassPerm[ 'perm' ])) {
-      			$forbidden = false;
-      		}
-      			
-      		
-      		
-      		if ( !isset( $MethodPerm[ 'perm' ] ) || !is_array( $MethodPerm[ 'perm' ] ) ) {
-      			if ($forbidden && $config[ 'ForbiddenByDefault' ] ) {
-      				Helper::RaiseError( 404 , $_SERVER['REQUEST_URI'] );
-      			}
-      		}
-      		self::CheckAnnotations($ClassPerm, $Perms, $REQUEST_METHOD,$config);
-      		self::CheckAnnotations($MethodPerm, $Perms, $REQUEST_METHOD,$config);
-      		
-      		
-      		
-      	}
+  		$Perms = Session::get('Perms');
+  		if ( empty( $Perms ) ){
+  			Session::__setArray( 'Perms', $config['DefualtPerm'] );
+  			$Perms = array($config['DefualtPerm']);
+  		}
+  		
+  		$REQUEST_METHOD =  strtolower($_SERVER[ 'REQUEST_METHOD' ]);
+  		$forbidden = true;
+  		$ClassPerm = Annotations::getClassAnnotations( '\\app\\controller\\'.__REQ__CLASS__ );
+  		$MethodPerm = Annotations::getMethodAnnotations( '\\app\\controller\\'.__REQ__CLASS__, __REQ__METHOD__ );
+  		 
+  		if(isset( $ClassPerm[ 'perm' ] ) && is_array($ClassPerm[ 'perm' ])) {
+  			$forbidden = false;
+  		}
+	
+  		if ( !isset( $MethodPerm[ 'perm' ] ) || !is_array( $MethodPerm[ 'perm' ] ) ) {
+  			if ($forbidden && $config[ 'ForbiddenByDefault' ] ) {
+  				Helper::RaiseError( 404 , $_SERVER['REQUEST_URI'] );
+  			}
+  		}
+  		self::CheckAnnotations($ClassPerm, $Perms, $REQUEST_METHOD,$config);
+  		self::CheckAnnotations($MethodPerm, $Perms, $REQUEST_METHOD,$config);
     }
     public static function CheckPermissionByNames($name)
     {
@@ -52,7 +44,7 @@ class Authorization extends libs
 			Helper::RaiseError( 404, $_SERVER['REQUEST_URI'] );
 		
 		if ( !isset( $array[ 'ignore' ] ) || !in_array( 'csrf', $array[ 'ignore' ] ) ) {
-			if ( isset( $Perms[ 'logined' ] ) && $config[ 'AntiCsrf' ] === TRUE  ) {
+			if ( isset( $Perms[ $config['CheckCsrfOnPerm'] ] ) && $config[ 'AntiCsrf' ] === TRUE  ) {
 				$Csrf_Method = explode(',',$config[ 'CsrfCheckMethods' ]);
 				if ( in_array(array('all',$REQUEST_METHOD), $Csrf_Method) ) {
 					Security::CsrfTokenChecker($config[ 'CsrfTokenLocation' ],$config[ 'CsrfTokenName' ] );
@@ -60,17 +52,15 @@ class Authorization extends libs
 			}
 		}
 	
-		$MethodPerm = $array[ 'perm' ];
+		$MethodPerm = isset($array[ 'perm' ]) ? $array[ 'perm' ] : false;
 		if ( $MethodPerm ) {
-			foreach ( $MethodPerm as $Method ) {
-		
+			foreach ( $MethodPerm as $Method ) {		
 				if ( empty( $Perms ) )
 					Helper::RaiseError( 404, $_SERVER['REQUEST_URI'] );
 		
 				if ( in_array( $Method, $Perms ) === TRUE )
 					return;
-			}
-		
+			}	
 			Helper::RaiseError( 404 , $_SERVER['REQUEST_URI']);
 		}
 		

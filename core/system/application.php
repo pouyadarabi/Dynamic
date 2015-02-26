@@ -59,8 +59,8 @@ class Application
     }
     
 	private static function getSitePath(){
-		$folder = dirname($_SERVER['SCRIPT_NAME']);
-		return $folder == '/' ? '' : $folder . '/';
+		$folder = ltrim(dirname($_SERVER['SCRIPT_NAME']),'/');
+		return $folder . '/';
     }
 
 }

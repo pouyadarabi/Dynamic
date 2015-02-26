@@ -13,16 +13,21 @@ class Request extends libs {
 	protected $Range = false;
 	protected $Cases = false;
 	protected $Length = array ( 0, 100 );
-	protected function getvar($index, $ReqType, $TypeArray, $Required, $Clean, $Length, $Range, $Cases) {
-		$Req = self::GetArrayByType ( $ReqType );
+	protected function getvar($index, $ReqType, $Required, $Clean, $Length, $Range, $Cases,$default) {
+	    
+	    if ($this->Type === false)
+	        $type = (isset($this->TypeArray[$this->MyCounter]) ? $this->TypeArray[$this->MyCounter ++] : 's');
+	    else
+	        $type = $this->Type;
+	    
+		$Req = self::GetArrayByType ( $ReqType );		
+		$Check = $this->Check ( $index, $ReqType, $type );
 		
-		$Check = $this->Check ( $index, $ReqType, $TypeArray );
-		if (isset ( $Req [$index] )) {
+		$input_data = $default;
+		
+		if ($Check) {
 			$input = $Req [$index];
-			
-			if ($Required && trim($input) == ''){	    
-			    $this->PrintLast ( Messages::get('checkinput') );
-			}
+
 			if ($Length !== false){
 				if ((is_string ( $input ) && (strlen ( $input ) > $Length [1] || strlen ( $input ) < $Length [0])))
 				    $this->PrintLast ( Messages::get('checkinput') );
@@ -35,17 +40,20 @@ class Request extends libs {
 				if (! in_array ( $input, $Cases ))
 					$this->PrintLast ( Messages::get('checkinput') );
 			}
+			if ($Clean !== false) {
+			    $input_data = Security::CleanXssString ( $input );
+			}
+			else 
+			    $input_data =  $input;
 		}
-		if ($Required === true && $Check === false) {
-			$this->PrintLast ( Messages::get('checkinput') );
+		else{
+    		if ($Required)
+    			$this->PrintLast ( Messages::get('checkinput') );	
 		}
-		if ($Clean === true && $Check === TRUE) {
-			return Security::CleanXssString ( $Req [$index] );
-		}
-		if ($Check === true && isset ( $Req [$index] )) {
-			return $Req [$index];
-		} else
-			return false;
+		$this->Range = false;
+		$this->Cases = false;
+		$this->Length = false;
+		return $input_data;
 	}
 	private function GetArrayByType($Type) {
 		switch ($Type) {
