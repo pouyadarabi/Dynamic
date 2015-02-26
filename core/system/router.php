@@ -5,16 +5,21 @@ class router
 {
     public static function DoRoute()
     {
-       	if(!empty($_SERVER [ 'QUERY_STRING' ]) && !empty($GLOBALS['CONFIG']['UrlAllowedChars']))
-        	self::filter_uri( $_SERVER [ 'QUERY_STRING' ] );
+     
        	$url_string = '';
        	$url_array = array();
-        if(isset($_SERVER ['REQUEST_URI'])){
-	        $url = parse_url ( urldecode($_SERVER ['REQUEST_URI']), PHP_URL_PATH );
-	        $root = __Dynamic_PATH__;
-	        $url_string = strtolower(trim(str_ireplace($root, '', $url),'/'));
-	        $url_array = explode('/',$url_string);
-        }
+       	if(!ISCLI){
+       	    if(!empty($_SERVER [ 'QUERY_STRING' ]) && !empty($GLOBALS['CONFIG']['UrlAllowedChars']))
+       	        self::filter_uri( $_SERVER [ 'QUERY_STRING' ] );
+       	    
+            if(isset($_SERVER ['REQUEST_URI'])){
+    	        $url = parse_url ( urldecode($_SERVER ['REQUEST_URI']), PHP_URL_PATH );
+    	        $root = __Dynamic_PATH__;
+    	        $url_string = strtolower(trim(str_ireplace($root, '', $url),'/'));
+    	        $url_array = explode('/',$url_string);
+            }
+       	}
+       
         if ( empty( $url_string )) {
             $url_array [0] = __Defualt_Controller__;
         }
@@ -28,7 +33,7 @@ class router
         }        
         define ( '__REQ__CLASS__', $url_array [0]);
         define ( '__REQ__METHOD__', $url_array [1]);    
-        if($GLOBALS['CONFIG']['CheckAnnotations'] === TRUE){
+        if(!ISCLI && $GLOBALS['CONFIG']['CheckAnnotations'] === true){
         	Authorization::DoAuthorization();
         }    
         $classname = '\\app\\controller\\'.__REQ__CLASS__;	

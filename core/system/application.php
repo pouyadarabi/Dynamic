@@ -7,6 +7,7 @@ class Application
     {
         $GLOBALS['CONFIG'] =  include dirname( __FILE__ ).'/../config/appconfig.php';
         define('ISCLI', PHP_SAPI === 'cli');
+        self::checkAllowedHosts();
         $DynamicRoot = self::getSitePath();
         define( '__Dynamic_PATH__',$DynamicRoot );
         define( '__APP_PATH__', __SITE_PATH__.'/app' );
@@ -18,9 +19,25 @@ class Application
         router::DoRoute();
        
     }
-
+    /*
+     * fix Host header attack
+    */
+    private static function checkAllowedHosts(){
+        if(ISCLI)
+            return;
+        $hosts = $GLOBALS['CONFIG']['AllowedHosts'];
+        if($hosts !== ''){
+            $host = $_SERVER['HTTP_HOST'];
+            $hosts = explode(',',$hosts);
+            if(!in_array($host,$hosts)){
+                die;
+            }
+        }
+    }
     public static function SecurityHeader()
     {
+        if(ISCLI)
+            return;
         header( 'X-Frame-Options: SameOrigin' );
         header( 'X-XSS-Protection: 1' );
         header( 'X-Powered-By: Dynamic' );
@@ -40,8 +57,8 @@ class Application
     }
     
 	private static function getSitePath(){
-		$folder = dirname($_SERVER['SCRIPT_NAME']);
-		return $folder == '/' ? '' : $folder . '/';
+		$folder = ltrim(dirname($_SERVER['SCRIPT_NAME']),'/');
+		return $folder . '/';
     }
 
 }

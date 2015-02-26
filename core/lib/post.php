@@ -12,16 +12,8 @@ class POST extends Request {
 		
 		return self::$_instance;
 	}
-	public function get($index) {
-		if ($this->Type === false)
-			$type = (isset ( $this->TypeArray [$this->MyCounter] ) ? $this->TypeArray [$this->MyCounter ++] : 's');
-		else
-			$type = $this->Type;
-		$res = parent::getvar ( $index, 'p', $type, $this->Required, $this->Clean, $this->Length, $this->Range, $this->Cases );
-		$this->Range = false;
-		$this->Cases = false;
-		$this->Length = false;
-		return $res;
+	public function get($index,$default = '') {
+	    return parent::getvar ( $index, 'p', $this->Required, $this->Clean, $this->Length, $this->Range, $this->Cases,$default);
 	}
 	public function isSeted() {
 		return parent::CheckisSeted ( 'p' );
