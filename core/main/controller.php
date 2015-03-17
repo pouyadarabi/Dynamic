@@ -9,7 +9,7 @@ class Controller extends AbstractClass
 
     protected function Redirect( $url = '', $append = '' )
     { 	
-        if ( trim( $url == '' ) ) {
+        if ( trim( $url )  == '' ) {
         	$protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         	$siteURL =  $protocol . $_SERVER[ 'HTTP_HOST' ] . '/' . __Dynamic_PATH__;
             $url = $siteURL . 'main' . $append;
