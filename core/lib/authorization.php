@@ -29,12 +29,14 @@ class Authorization extends libs
   		self::CheckAnnotations($MethodPerm, $Perms, $REQUEST_METHOD);
 	
     }
-    public static function CheckPermissionByNames($name)
+    public static function CheckPermissionByNames($names)
     {
-    	$perms = Session::get('Perms');
-    	if ( in_array( $name, $perms) )
-    		return true;
-    	return false;
+        $perms = Session::get('Perms');
+        if($perms)
+            foreach ($names as $perm)
+                if ( in_array( $perm, $perms) )
+                    return true;
+        return false;
     }
 
 	private static function CheckAnnotations($array,$Perms,$REQUEST_METHOD){
@@ -44,7 +46,7 @@ class Authorization extends libs
 			Helper::RaiseError( 404, $_SERVER['REQUEST_URI'] );
 		
 		if ( !isset( $array[ 'ignore' ] ) || !in_array( 'csrf', $array[ 'ignore' ] ) ) {
-			if ( isset( $Perms[ $config['CheckCsrfOnPerm'] ] ) && $GLOBALS['CONFIG'][ 'AntiCsrf' ] === TRUE  ) {
+			if ( isset( $Perms[ $GLOBALS['CONFIG']['CheckCsrfOnPerm'] ] ) && $GLOBALS['CONFIG'][ 'AntiCsrf' ] === TRUE  ) {
 				$Csrf_Method = explode(',',$GLOBALS['CONFIG'][ 'CsrfCheckMethods' ]);
 				if ( in_array(array('all',$REQUEST_METHOD), $Csrf_Method) ) {
 					Security::CsrfTokenChecker( $GLOBALS['CONFIG'][ 'CsrfTokenLocation' ],$GLOBALS['CONFIG'][ 'CsrfTokenName' ] );
