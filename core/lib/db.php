@@ -2,10 +2,8 @@
 namespace core\lib;
 use core\main\libs;
 class db extends libs{
-	public $pdo = NULL;
-	public $Result;
+	protected  $pdo = null;
 	function __construct($ConnectNow = true,$DbName = false,$DbHost = false,$DbUser = false,$DbPass = false) {
-		parent::__construct();
 		if($ConnectNow)
 			$this->connect ($DbName,$DbHost,$DbUser,$DbPass);
 		
@@ -14,7 +12,7 @@ class db extends libs{
 	}
 	
 	public function GetSQLConnection(){	
-	   if($this->pdo == NULL) 
+	   if($this->pdo == null) 
 	       $this->connect ();
 	    return $this->pdo;
 	}
@@ -41,19 +39,18 @@ class db extends libs{
 		return false;
 	}
 	
-	public function query($query, array $myarr = NULL) {
+	public function query($query, array $myarr = null) {
 		$result = $this->pdo->prepare ( $query );
 		$result->execute ( $myarr );
-		
+
 		if ($result == false) {
 		   
 			// Log Error
 		}
-		$this->res = $result;
 		return $result;
 	}
 
-	public function update(array $values, $table, $where = false, $limit = false, array $myarr = NULL) {
+	public function update(array $values, $table, $where = false, $limit = false, array $myarr = null) {
 		if (count ( $values ) < 0)
 			return false;
 		$fields = array ();
@@ -71,7 +68,7 @@ class db extends libs{
 			return false;
 	}
 
-	public function insert(array $values, $table, array $myarr = NULL) {
+	public function insert(array $values, $table, array $myarr = null) {
 		if (count ( $values ) < 0)
 			return false;
 		
@@ -85,7 +82,7 @@ class db extends libs{
 			return false;
 	}
 	
-	public function select($fields, $table = false, $where = false, $orderby = false, $limit = false, array $myarr = NULL) {
+	public function select($fields, $table = false, $where = false, $orderby = false, $limit = false, array $myarr = null) {
 		if (is_array ( $fields ))
 			$fields = "`" . implode ( $fields, "`, `" ) . "`";
 		
@@ -94,13 +91,14 @@ class db extends libs{
 		$where = ($where) ? " WHERE " . $where : '';
 		$limit = ($limit) ? " LIMIT " . $limit : '';
 		$stmt = "SELECT " . $fields . $table . $where . $orderby . $limit;
+
 		$res = $this->query ( $stmt, $myarr );
 		if ($res->rowCount () > 0) {
 			return $res->fetchAll(\PDO::FETCH_ASSOC);
 		} else
 			return false;
 	}
-	public function selectValues($fields, $table = false, $where = false, $orderby = false, $limit = false, array $myarr = NULL) {
+	public function selectValues($fields, $table = false, $where = false, $orderby = false, $limit = false, array $myarr = null) {
 		if (is_array ( $fields ))
 			$fields = "`" . implode ( $fields, "`, `" ) . "`";
 	
@@ -116,18 +114,17 @@ class db extends libs{
 			return false;
 	}
 
-	public function selectOne($fields, $table = false, $where = false, $orderby = false, array $myarr = NULL) {
+	public function selectOne($fields, $table = false, $where = false, $orderby = false, array $myarr = null) {
 		$result = $this->select ( $fields, $table, $where, $orderby, '1', $myarr );
-		
 		return $result [0];
 	}
 
-	public function selectOneValue($field, $table = false, $where = false,$order = false, array $myarr = NULL) {
+	public function selectOneValue($field, $table = false, $where = false,$order = false, array $myarr = null) {
 		$result = $this->selectOne ( $field, $table, $where, $order, $myarr );
 		return $result [$field];
 	}
 	
-	public function delete($table, $where = false, $limit = false, array $myarr = NULL) {
+	public function delete($table, $where = false, $limit = false, array $myarr = null) {
 		$where = ($where) ? " WHERE " . $where : '';
 		$limit = ($limit) ? " LIMIT " . $limit : '';
 		$stmt = "DELETE FROM `" . $table . "`" . $where . $limit;
@@ -138,58 +135,37 @@ class db extends libs{
 	}
 	
 
-	public function fetchAssoc($query = false, array $myarr = NULL) {
-		$this->resCalc ( $query, $myarr );
-		$cal = $this->res;
-		if ($query != false)
-			$cal = $query;
-		return $cal->fetch ( \PDO::FETCH_ASSOC );
-	}
-
-	public function fetchRow($query = false) {
-		$this->resCalc ( $query );
-		$cal = $this->res;
-		if ($query != false)
-			$cal = $query;
-		return $cal->fetch ( \PDO::FETCH_NUM );
-	}
-	
-	public function fetchOne($query = false) {
-		list ( $result ) = $this->fetchRow ( $query );
-		return $result;
-	}
-
 	public function insertId() {
 		return ( int ) $this->pdo->lastInsertId ();
 	}
 	
 	public function affectedRows() {
 		return ( int ) $this->res->rowCount ();
-		;
 	}
 
 	public function error() {
 		return $this->pdo->errorCode ();
 	}
+	
+	public function count($table, $where = '', array $myarr = null)
+	{
+	    return $this->selectOneValue('count(*)',$table,$where,false,$myarr);
+	}
 	public function beginTransaction(){
-		$this->pdo->beginTransaction();
+	    $this->pdo->beginTransaction();
 	}
 	
 	public function commit(){
-		$this->pdo->commit();
+	    $this->pdo->commit();
 	}
 	
 	public function rollBack(){
-		$this->pdo->rollBack();
+	    $this->pdo->rollBack();
 	}
 	
 	public function GetUniqeID(){
 	    $res = $this->pdo->query('SELECT uuid()');
 	    $res = $res->fetch ( \PDO::FETCH_ASSOC );
 	    return $res['uuid()'];
-	}
-	public function count($table, $where = '', array $myarr = NULL)
-	{
-	    return $this->selectOneValue('count(*)',$table,$where,false,$myarr);
 	}
 }
