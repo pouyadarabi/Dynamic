@@ -18,7 +18,7 @@ class Controller extends AbstractClass
         header( 'location: ' . $url );
         exit;
     }
-    protected function site_url( $url == '' )
+    protected function site_url( $url = '' )
     {
     	$protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
     	$siteURL =  $protocol . $_SERVER[ 'HTTP_HOST' ] . '/' . __Dynamic_PATH__;
