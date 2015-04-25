@@ -26,7 +26,7 @@ return array (
 		                        
 		// Whilte List Controllers
 		
-		'Controllers' => array ( 'main' ),
+		'Controllers' => [ 'main' ],
 		
 		// / Method Annotations
 		'CheckAnnotations' => false,
