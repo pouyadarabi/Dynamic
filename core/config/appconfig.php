@@ -3,7 +3,7 @@ return array (
 		
 		// ------------------------| Config |--------------------------- #
 		'DebugMode' => false, // set it to false when you want publish application
-		'SqlErrorDetais' => false,
+		'showSqlErrors' => false,
 		
 		// --------------------------| DB |----------------------------- #
 		'DbName' => 'DB_NAME', // Db Name
@@ -18,7 +18,7 @@ return array (
 		'Session_IPCheck' => false,
 		'Session_UserAgentCheck' => false,
 		'Session_Secure' => false, // check user agent and ip ,set it to true when you don't use cli
-        'AllowedHosts' => '', // allowed hosts aplit by comma 
+        'AllowedHosts' => '', // allowed hosts split by comma 
 		// ----------------------| Config |----------------------- #
 		
 		'AppName' => 'Dynamic', // application name (used in cookie name)
@@ -28,7 +28,7 @@ return array (
 		
 		'Controllers' => array ( 'main' ),
 		
-		// / Method Permissions
+		// / Method Annotations
 		'CheckAnnotations' => false,
 		'ForbiddenByDefault' => true,
 		'DefualtPerm' => 'guest',

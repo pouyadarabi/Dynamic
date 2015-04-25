@@ -2,15 +2,12 @@
 namespace core\lib;
 use core\main\libs;
 class db extends libs{
-	protected  $pdo = null;
+	protected $pdo = null;
 	function __construct($ConnectNow = true,$DbName = false,$DbHost = false,$DbUser = false,$DbPass = false) {
 		if($ConnectNow)
-			$this->connect ($DbName,$DbHost,$DbUser,$DbPass);
-		
-		return;
-		
-	}
-	
+			$this->connect ($DbName,$DbHost,$DbUser,$DbPass);		
+		return;	
+	}	
 	public function GetSQLConnection(){	
 	   if($this->pdo == null) 
 	       $this->connect ();
@@ -26,7 +23,7 @@ class db extends libs{
 			
 			$this->pdo->exec ( 'SET NAMES utf8' );
 			$this->pdo->setAttribute ( \PDO::ATTR_EMULATE_PREPARES, FALSE );
-			if ($config['SqlErrorDetais'])
+			if ($config['showSqlErrors'])
 				$this->pdo->setAttribute ( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
 		} catch ( \Exception $e ) {
 			trigger_error ( 'Could not connect to the database.', E_USER_ERROR );
@@ -138,15 +135,9 @@ class db extends libs{
 	public function insertId() {
 		return ( int ) $this->pdo->lastInsertId ();
 	}
-	
-	public function affectedRows() {
-		return ( int ) $this->res->rowCount ();
-	}
-
 	public function error() {
 		return $this->pdo->errorCode ();
-	}
-	
+	}	
 	public function count($table, $where = '', array $myarr = null)
 	{
 	    return $this->selectOneValue('count(*)',$table,$where,false,$myarr);
