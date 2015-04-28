@@ -129,4 +129,7 @@ class Request extends libs {
 		$this->Length = array ( $MinLength,$MaxLength );
 		return $this;
 	}
+	public static function getMethod(){
+	    return strtolower($_SERVER['REQUEST_METHOD']);
+	}
 }

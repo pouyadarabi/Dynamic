@@ -5,11 +5,12 @@ class Controller extends AbstractClass
 
     public function __construct()
     {
+        
     }
 
     protected function Redirect( $url = '', $append = '' )
     { 	
-        if ( trim( $url == '' ) ) {
+        if ( $url == '' ) {
         	$protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         	$siteURL =  $protocol . $_SERVER[ 'HTTP_HOST' ] . '/' . __Dynamic_PATH__;
             $url = $siteURL . 'main' . $append;
