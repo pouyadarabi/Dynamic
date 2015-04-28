@@ -10,11 +10,8 @@ class Controller extends AbstractClass
 
     protected function Redirect( $url = '', $append = '' )
     { 	
-        if ( $url == '' ) {
-        	$protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-        	$siteURL =  $protocol . $_SERVER[ 'HTTP_HOST' ] . '/' . __Dynamic_PATH__;
-            $url = $siteURL . 'main' . $append;
-        }
+        if ( $url == '' ) 
+            $url = __Defualt_Controller__ . $append;       
         $url = $this->site_url($url);
         header( 'location: ' . $url );
         exit;
@@ -22,7 +19,7 @@ class Controller extends AbstractClass
     protected function site_url( $url = '' )
     {
     	$protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-    	$siteURL =  $protocol . $_SERVER[ 'HTTP_HOST' ] . '/' . __Dynamic_PATH__;
+        $siteURL =  $protocol . $_SERVER[ 'HTTP_HOST' ] . '/' . __Dynamic_PATH__;
     	if (parse_url($url, PHP_URL_SCHEME) != '') 
     		return $url;
     	$url = str_ireplace(__Dynamic_PATH__, '', $url);
