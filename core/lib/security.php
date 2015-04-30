@@ -244,16 +244,16 @@ class Security extends libs
         return $flag;
     }
 
-    public static function CleanDownloadChar ($file)
+    public static function cleanFileName ($file)
     {
-        $badWinChars = array_merge(array_map('chr', range(0, 31)), array("<",">",":",'"',"/","\\","|","?","*"));
+        $badChars = array_merge(array_map('chr', range(0, 31)), array("<",">",":",'"',"/","\\","|","?","*"));
         if (is_array($file)) {
             foreach ($file as $index => $value) {
-                $file[$index] = str_replace($badWinChars, '', $value);
+                $file[$index] = str_replace($badChars, '', $value);
             }
             return $file;
         }
-        $file = str_replace($badWinChars, '', $file);
+        $file = str_replace($badChars, '', $file);
         return $file;
     }
 
