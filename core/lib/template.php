@@ -13,7 +13,7 @@ class Template extends libs
     public static function setArray(array $array )
     {
     	foreach ($array as $key => $value) {
-    		self::$items[ $key ][] =  $value;
+    		self::$items[ $key ] =  $value;
     	}
     	
     }
