@@ -125,15 +125,18 @@ class Template extends libs {
                     $loop_e = strpos($input, "[/for]");
                     $loop_body = substr($input, $loop_s, $loop_e - $loop_s);
                     $body = '';
+                    $num = 1;
                     
                     foreach ($vars as $var) {
                         $replaced = $loop_body;
                         foreach ($var as $item => $value) {
                             $replaced = str_replace('[@' . $item . ']', $value, $replaced);
                         }
-                        
-                        $input = substr_replace($input, $replaced, $loop_e + 6, 0);
+                        $replaced = str_replace('[@_num]', $num++ , $replaced);
+                        $body .= $replaced;
+                      
                     }
+                    $input = substr_replace($input, $body, $loop_e + 6, 0);
                 }
                 $input = substr($input, 0, strpos($input, "[for $loop]")) . substr($input, strpos($input, "[/for]") + 6, strlen($input));
             }
