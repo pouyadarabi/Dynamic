@@ -26,8 +26,8 @@ class Template extends libs {
         $output = self::parseIncludes($output);
         $output = self::parseVariables($output);
         $output = self::parseLoops($output);
-      //  $output = self::removeUnused($output);
-  
+        $output = self::removeUnused($output);
+      
         if ($return)
             return $output;
         else
@@ -143,8 +143,7 @@ class Template extends libs {
     }
 
     private static function removeUnused ($input) {
-        $output = preg_replace('\[@(.*?)\]', '', $input);
-       
+        $output = preg_replace('/\[(@|\$|#)(.*?)\]/', '', $input);
         return $output;
     }
 }
