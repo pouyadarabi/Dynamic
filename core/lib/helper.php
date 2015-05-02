@@ -114,7 +114,7 @@ class Helper extends libs{
 			self::PrintLast ( Messages::get('FileUpload_Nofile') );
 		} else {
 			$original_name = $_FILES [$fileElementName] ['name'];
-			$name = Security::getInstance ()->CleanUploadsChar ( $_FILES [$fileElementName] ['name'] );
+			$name = Security::CleanUploadsChar ( $_FILES [$fileElementName] ['name'] );
 			$ext = strtolower ( substr ( $name, strlen ( $name ) - 3, 3 ) );
 			if ($ext == null || trim ( $ext ) == '') {
 				self::PrintLast ( Messages::get('BypassKicked') );
@@ -184,7 +184,7 @@ class Helper extends libs{
 				self::PrintLast ( Messages::get('FileUpload_Nofile') );
 			} else {
 				$original_name = $_FILES [$fileElementName] ['name'] [$i];
-				$name = Security::getInstance ()->CleanUploadsChar ( $_FILES [$fileElementName] ['name'] [$i] );
+				$name = Security::CleanUploadsChar ( $_FILES [$fileElementName] ['name'] [$i] );
 				$ext = strtolower ( substr ( $name, strlen ( $name ) - 3, 3 ) );
 				if ($ext == null || trim ( $ext ) == '') {
 					self::PrintLast ( Messages::get('BypassKicked') );
