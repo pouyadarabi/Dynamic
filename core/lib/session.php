@@ -13,8 +13,16 @@ class Session extends libs
         $app_name = str_replace('.', '_', $config['AppName']);
         session_name($app_name);
         
-        if (session_id() == '')
+        if (session_id() == '') {
+            $session_id = '';
+            if (isset($_COOKIE[$app_name])) {
+                $session_id = $_COOKIE[$app_name];
+            }
+            if (!preg_match('/^[a-z0-9]{32}$/', $session_id)) {
+                session_regenerate_id();
+            }
             session_start();
+        }
         
         if (isset($_SESSION['fingerprint'])) {
             $var = false;
