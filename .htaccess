@@ -1,11 +1,12 @@
-# htacces
+# htaccess
 # Dynamic Mvc
 # Version 1.3
 # source: https://github.com/PouyaDarabi/Dynamic
 
-<IfModule mod_rewrite.c>
-
 RewriteEngine On
+# Block access to PHP easter eggs
+RewriteCond %{QUERY_STRING} \=PHP[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12} [NC]
+RewriteRule .* - [F]
 # Block out any script trying to base64_encode data within the URL.
 RewriteCond %{QUERY_STRING} base64_encode[^(]*\([^)]*\) [OR]
 # Block out any script that includes a <script> tag in URL.
@@ -18,13 +19,12 @@ RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
 RewriteRule .* index.php [F]
 #
 
-    # Check File
-	RewriteCond %{REQUEST_FILENAME} -f [OR]
-	# Check file-shortcut
-	RewriteCond %{REQUEST_FILENAME} -l [OR]
-	# Check Directory 
-	RewriteCond %{REQUEST_FILENAME} -d
-	
-	RewriteRule ^.*$ - [NC,L]
-	RewriteRule ^.*$ index.php [NC,L]
-</IfModule>
+# Check File
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+# Check file-shortcut
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+# Check Directory 
+RewriteCond %{REQUEST_FILENAME} -d
+
+RewriteRule ^.*$ - [NC,L]
+RewriteRule ^.*$ index.php [NC,L]
