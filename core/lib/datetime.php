@@ -1,7 +1,7 @@
 <?php
 namespace core\lib;
 
-class MyDate
+class DateTime
 {
 
     public static $pdateWeekName = array(
@@ -46,7 +46,7 @@ class MyDate
         29
     );
 
-    public function pdate ($format, $timestamp = "")
+    public static function pdate ($format, $timestamp = "")
     {
         global $pdateMonthName, $pdateWeekName, $MonthDays;
         if ($timestamp === "") {
