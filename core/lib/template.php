@@ -35,7 +35,6 @@ class Template extends libs {
     }
 
     private static function parseInput ($viewFile) {
-        $viewFile = Security::cleanFileName($viewFile);
         $viewFile = __View_PATH__ . $viewFile;
         $output = file_get_contents($viewFile . '.html');
         return $output;
@@ -54,17 +53,12 @@ class Template extends libs {
 
     private static function parseIncludes ($input) {
         $output = $input;
-        preg_match_all('/\[@Include_(.*?)\]/', $output, $Array);
+        preg_match_all('/\[Include\s(.*?)\]/', $output, $Array);
         if (count($Array) > 0) {
             $Incs = $Array[1];
             foreach ($Incs as $name) {
-                $Cleanedname = Security::CleanDownloadChar($name);
-                $namearray = explode('/', $Cleanedname);
-                
-                $Cleanedname = str_replace('_', '/', $Cleanedname);
-                $Included = self::Show($Cleanedname, false);
-                
-                $str = '[@Include_' . $name . ']';
+                $Included = self::Show($name, true);
+                $str = '[Include ' . $name . ']';
                 $output = str_replace($str, $Included, $output);
             }
         }
