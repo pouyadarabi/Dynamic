@@ -38,7 +38,6 @@ class Template extends libs {
     }
     private static function checkVars () {
 
-<<<<<<< HEAD
         if(!isset(self::$items[self::$viewFile]))
             self::$items[self::$viewFile] = [];
         if(!isset(self::$items['dynamic_global']))
@@ -47,10 +46,6 @@ class Template extends libs {
 
     private static function parseInput () {
         $viewFile = __View_PATH__ . self::$viewFile;
-=======
-    private static function parseInput ($viewFile) {
-        $viewFile = __View_PATH__ . $viewFile;
->>>>>>> 791ac690a485e7ee3c89b2de17e3498478f64073
         $output = file_get_contents($viewFile . '.html');
         return $output;
     }
@@ -70,25 +65,16 @@ class Template extends libs {
 
     private static function parseIncludes ($input) {
         $output = $input;
-<<<<<<< HEAD
         preg_match_all('/\[include\s(.*?)\]/', $output, $Array);
 
-=======
-        preg_match_all('/\[Include\s(.*?)\]/', $output, $Array);
->>>>>>> 791ac690a485e7ee3c89b2de17e3498478f64073
         if (count($Array) > 0) {
             $Incs = $Array[1];
 
             foreach ($Incs as $name) {
-<<<<<<< HEAD
 
                 $Included = self::Show($name, true);
 
                 $str = '[include ' . $name . ']';
-=======
-                $Included = self::Show($name, true);
-                $str = '[Include ' . $name . ']';
->>>>>>> 791ac690a485e7ee3c89b2de17e3498478f64073
                 $output = str_replace($str, $Included, $output);
             }
         }
