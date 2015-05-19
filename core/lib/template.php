@@ -5,45 +5,62 @@ use core\main\libs;
 class Template extends libs {
 
     private static $items;
-
     private static $checkPerms;
+    private static $viewFile;
 
-    public static function set ($index, $value) {
-        self::$items[$index] = $value;
+    public static function set ($index, $value,$view_name = 'dynamic_global') {
+        self::$items[$view_name][$index] = $value;
     }
 
-    public static function setArray (array $array) {
+    public static function setArray (array $array,$view_name = 'dynamic_global') {
         foreach ($array as $key => $value) {
-            self::$items[$key] = $value;
+            self::$items[$view_name][$key] = $value;
         }
     }
 
+
     public static function Show ($viewFile, $return = false, $checkPerm = true) {
         self::$checkPerms = $checkPerm;
-        
-        $output = self::parseInput($viewFile);
+        self::$viewFile = $viewFile;
+        self::checkVars();
+        $output = self::parseInput();
         $output = self::parsePermissions($output);
         $output = self::parseIncludes($output);
+        $output = self::parseConditions($output);
         $output = self::parseVariables($output);
         $output = self::parseLoops($output);
         $output = self::removeUnused($output);
-      
+
         if ($return)
             return $output;
         else
             echo $output;
     }
+    private static function checkVars () {
 
+<<<<<<< HEAD
+        if(!isset(self::$items[self::$viewFile]))
+            self::$items[self::$viewFile] = [];
+        if(!isset(self::$items['dynamic_global']))
+            self::$items['dynamic_global'] = [];
+    }
+
+    private static function parseInput () {
+        $viewFile = __View_PATH__ . self::$viewFile;
+=======
     private static function parseInput ($viewFile) {
         $viewFile = __View_PATH__ . $viewFile;
+>>>>>>> 791ac690a485e7ee3c89b2de17e3498478f64073
         $output = file_get_contents($viewFile . '.html');
         return $output;
     }
 
     private static function parseVariables ($input) {
         $output = $input;
-        if (self::$items) {
-            foreach (self::$items as $item => $value) {
+        $items = array_merge(self::$items[self::$viewFile],self::$items['dynamic_global']);
+
+        if ($items) {
+            foreach ($items as $item => $value) {
                 $output = str_replace('[@' . $item . ']', $value, $output);
             }
         }
@@ -53,12 +70,25 @@ class Template extends libs {
 
     private static function parseIncludes ($input) {
         $output = $input;
+<<<<<<< HEAD
+        preg_match_all('/\[include\s(.*?)\]/', $output, $Array);
+
+=======
         preg_match_all('/\[Include\s(.*?)\]/', $output, $Array);
+>>>>>>> 791ac690a485e7ee3c89b2de17e3498478f64073
         if (count($Array) > 0) {
             $Incs = $Array[1];
+
             foreach ($Incs as $name) {
+<<<<<<< HEAD
+
+                $Included = self::Show($name, true);
+
+                $str = '[include ' . $name . ']';
+=======
                 $Included = self::Show($name, true);
                 $str = '[Include ' . $name . ']';
+>>>>>>> 791ac690a485e7ee3c89b2de17e3498478f64073
                 $output = str_replace($str, $Included, $output);
             }
         }
@@ -105,6 +135,38 @@ class Template extends libs {
         return $output;
     }
 
+    private static function parseConditions ($input) {
+        $conditions = null;
+        preg_match_all('/\[if\s(.*?)\]/', $input, $conditions);
+
+        $conditions = $conditions[1];
+
+        if ($conditions) {
+            foreach ($conditions as $condition) {
+                $items = array_merge(self::$items[self::$viewFile],self::$items['dynamic_global']);
+                if (isset($items[$condition]) && $items[$condition]) {
+
+                    $len = strlen("[if $condition]");
+                    $condition_s = strpos($input, "[if $condition]");
+                    $condition_e = strpos($input, "[/if]",$condition_s);
+
+
+                    $input = substr($input, 0, strpos($input, "[/if]")) . substr($input, strpos($input, "[/if]") + 5, strlen($input));
+
+                    $input = substr($input, 0, $condition_s) . substr($input, $condition_s  + $len, strlen($input));
+
+
+
+                }
+                else {
+                    $input = substr($input, 0, strpos($input, "[if $condition]")) . substr($input, strpos($input, "[/if]") + 5, strlen($input));
+                }
+            }
+        }
+
+        return $input;
+    }
+
     private static function parseLoops ($input) {
         $loops = null;
         preg_match_all('/\[for\s(.*?)\]/', $input, $loops);
@@ -113,8 +175,9 @@ class Template extends libs {
         
         if ($loops) {
             foreach ($loops as $loop) {
-                if (isset(self::$items[$loop])) {
-                    $vars = self::$items[$loop];
+                $items = array_merge(self::$items[self::$viewFile],self::$items['dynamic_global']);
+                if (isset($items[$loop])) {
+                    $vars = $items[$loop];
                     $loop_s = strpos($input, "[for $loop]") + strlen("[for $loop]");
                     $loop_e = strpos($input, "[/for]");
                     $loop_body = substr($input, $loop_s, $loop_e - $loop_s);
