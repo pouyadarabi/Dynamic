@@ -27,8 +27,8 @@ class Template extends libs {
         $output = self::parsePermissions($output);
         $output = self::parseIncludes($output);
         $output = self::parseConditions($output);
-        $output = self::parseVariables($output);
         $output = self::parseLoops($output);
+        $output = self::parseVariables($output);
         $output = self::removeUnused($output);
 
         if ($return)
