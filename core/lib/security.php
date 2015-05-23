@@ -130,24 +130,28 @@ class Security extends libs
             return FALSE;
     }
 
-    public static function CheckType ($str, $Type)
+    public static function CheckType ($input, $Type)
     {
-        if (! is_array($str) && $Type == 's')
-            return self::TypeString($str);
-        if (! is_array($str) && $Type == 'd')
-            return self::TypeDate($str);
-        if (! is_array($str) && $Type == 'i')
-            return self::TypeInteger($str);
-        if (! is_array($str) && $Type == 'e')
-            return self::TypeEmail($str);
-        if (! is_array($str) && $Type == 'j')
-            return self::TypeJson($str);
-        if (! is_array($str) && $Type == 'o')
-            return self::TypeObject($str);
+        if (! is_array($input) && $Type == 's')
+            return self::TypeString($input);
+        if (! is_array($input) && $Type == 'd')
+            return self::TypeDate($input);
+        if (! is_array($input) && $Type == 'i')
+            return self::TypeInteger($input);
+        if (! is_array($input) && $Type == 'e')
+            return self::TypeEmail($input);
+        if (! is_array($input) && $Type == 'j')
+            return self::TypeJson($input);
+        if (! is_array($input) && $Type == 'o')
+            return self::TypeObject($input);
         if ($Type == 'oa')
-            return self::TypeObjectArray($str);
+            return self::TypeObjectArray($input);
         if ($Type == 'na')
-            return self::TypeNumArray($str);
+            return self::TypeNumArray($input);
+        if ($Type == 'sa')
+            return self::TypeStringArray($input);
+        if ($Type == 'a')
+            return is_array($input);
         
         return false;
     }
@@ -191,20 +195,28 @@ class Security extends libs
 
     private static function TypeNumArray ($arr)
     {
-        $i = 0;
         if (! is_array($arr)) {
             return false;
         }
         foreach ($arr as $val) {
-            if (trim($val) != '' && is_numeric($val)) {
-                $i ++;
+            if (trim($val) == '' || ! is_numeric($val)) {
+                return false;
             }
         }
-        if ($i == 0)
-            return false;
         return true;
     }
-
+    private static function TypeStringArray ($arr)
+    {
+        if (! is_array($arr)) {
+            return false;
+        }
+        foreach ($arr as $val) {
+            if (trim($val) == '' || ! is_string($val)) {
+                return false;
+            }
+        }
+        return true;
+    }
     private static function TypeJson ($str)
     {
         return json_decode($str) != null;
@@ -243,7 +255,7 @@ class Security extends libs
         }
         return $flag;
     }
-
+    
     public static function cleanFileName ($file)
     {
         $badChars = array_merge(array_map('chr', range(0, 31)), array("<",">",":",'"',"/","\\","|","?","*"));
