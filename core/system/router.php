@@ -15,6 +15,7 @@ class router
           
             if(isset($_SERVER ['REQUEST_URI'])){
     	        $url = parse_url ( urldecode($_SERVER ['REQUEST_URI']), PHP_URL_PATH );
+    	        $url = str_ireplace($_SERVER ['SCRIPT_NAME'], '', $url);
     	        $root = __Dynamic_PATH__;
     	        $url_string = strtolower(trim(str_ireplace($root, '', $url),'/'));
     	        $url_array = explode('/',$url_string);
