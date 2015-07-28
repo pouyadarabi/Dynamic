@@ -45,19 +45,18 @@ class Authorization extends libs
     }
 
 	private static function CheckAnnotations($array,$Perms,$REQUEST_METHOD,$config){
-		if(!$array)
-			return ;
-		if ( isset( $array[ 'method' ] ) && !in_array($REQUEST_METHOD, $array[ 'method' ] ) )
-			Helper::RaiseError( 404, $_SERVER['REQUEST_URI'] );
-		
-		if ( !isset( $array[ 'ignore' ] ) || !in_array( 'csrf', $array[ 'ignore' ] ) ) {
-			if ( isset( $Perms[ $config['CheckCsrfOnPerm'] ] ) && $config[ 'AntiCsrf' ] === TRUE  ) {
-				$Csrf_Method = explode(',',$config[ 'CsrfCheckMethods' ]);
-				if ( in_array(array('all',$REQUEST_METHOD), $Csrf_Method) ) {
-					Security::CsrfTokenChecker($config[ 'CsrfTokenLocation' ],$config[ 'CsrfTokenName' ] );
-				}
-			}
-		}
+	    if (! $array)
+            return;
+        if (isset($array['method']) && ! in_array($REQUEST_METHOD, $array['method']))
+            Helper::RaiseError(404, $_SERVER['REQUEST_URI']);
+        if (! isset($array['ignore']) || ! in_array('csrf', $array['ignore'])) { 
+            if (in_array($config['CheckCsrfOnPerm'], $Perms) && $config['AntiCsrf'] == true) {               
+                $Csrf_Method = explode(',', $config['CsrfCheckMethods']);
+                if (in_array($REQUEST_METHOD, $Csrf_Method)) {                   
+                    Security::CsrfTokenChecker($config['CsrfTokenLocation'], $config['CsrfTokenName']);
+                }
+            }
+        }
 	
 		$MethodPerm = isset($array[ 'perm' ]) ? $array[ 'perm' ] : false;
 		if ( $MethodPerm ) {
