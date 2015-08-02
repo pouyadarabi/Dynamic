@@ -1,6 +1,6 @@
 # htaccess
 # Dynamic Mvc
-# Version 1.4
+# Version 1.5
 # source: https://github.com/PouyaDarabi/Dynamic
 
 RewriteEngine On

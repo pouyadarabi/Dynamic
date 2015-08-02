@@ -7,7 +7,7 @@ class Authentication
     {
         $perms = Session::get('Perms');
         if(empty($perms)){
-        	$perms = array();
+        	$perms = [];
         }
         if ( is_array( $PermissionNames ) ) {
             foreach ( $PermissionNames as $Perm ) {

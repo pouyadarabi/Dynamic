@@ -1,25 +1,25 @@
 <?php
 namespace core\lib;
-use core\main\libs;
 
-class Template extends libs {
+class Template {
 
     private static $items;
+
     private static $checkPerms;
+
     private static $viewFile;
 
-    public static function set ($index, $value,$view_name = 'dynamic_global') {
+    public static function set($index, $value, $view_name = 'dynamic_global') {
         self::$items[$view_name][$index] = $value;
     }
 
-    public static function setArray (array $array,$view_name = 'dynamic_global') {
+    public static function setArray(array $array, $view_name = 'dynamic_global') {
         foreach ($array as $key => $value) {
             self::$items[$view_name][$key] = $value;
         }
     }
 
-
-    public static function Show ($viewFile, $return = false, $checkPerm = true) {
+    public static function Show($viewFile, $return = false, $checkPerm = true) {
         self::$checkPerms = $checkPerm;
         self::$viewFile = $viewFile;
         self::checkVars();
@@ -30,30 +30,30 @@ class Template extends libs {
         $output = self::parseLoops($output);
         $output = self::parseVariables($output);
         $output = self::removeUnused($output);
-
+        
         if ($return)
             return $output;
         else
             echo $output;
     }
-    private static function checkVars () {
 
-        if(!isset(self::$items[self::$viewFile]))
+    private static function checkVars() {
+        if (! isset(self::$items[self::$viewFile]))
             self::$items[self::$viewFile] = [];
-        if(!isset(self::$items['dynamic_global']))
+        if (! isset(self::$items['dynamic_global']))
             self::$items['dynamic_global'] = [];
     }
 
-    private static function parseInput () {
+    private static function parseInput() {
         $viewFile = __View_PATH__ . self::$viewFile;
         $output = file_get_contents($viewFile . '.html');
         return $output;
     }
 
-    private static function parseVariables ($input) {
+    private static function parseVariables($input) {
         $output = $input;
-        $items = array_merge(self::$items[self::$viewFile],self::$items['dynamic_global']);
-
+        $items = array_merge(self::$items[self::$viewFile], self::$items['dynamic_global']);
+        
         if ($items) {
             foreach ($items as $item => $value) {
                 $output = str_replace('[@' . $item . ']', $value, $output);
@@ -63,17 +63,17 @@ class Template extends libs {
         return $output;
     }
 
-    private static function parseIncludes ($input) {
+    private static function parseIncludes($input) {
         $output = $input;
         preg_match_all('/\[include\s(.*?)\]/', $output, $Array);
-
+        
         if (count($Array) > 0) {
             $Incs = $Array[1];
-
+            
             foreach ($Incs as $name) {
-
+                
                 $Included = self::Show($name, true);
-
+                
                 $str = '[include ' . $name . ']';
                 $output = str_replace($str, $Included, $output);
             }
@@ -81,7 +81,7 @@ class Template extends libs {
         return $output;
     }
 
-    private static function parsePermissions ($input) {
+    private static function parsePermissions($input) {
         $output = $input;
         if (! self::$checkPerms)
             return $output;
@@ -121,39 +121,34 @@ class Template extends libs {
         return $output;
     }
 
-    private static function parseConditions ($input) {
+    private static function parseConditions($input) {
         $conditions = null;
         preg_match_all('/\[if\s(.*?)\]/', $input, $conditions);
-
+        
         $conditions = $conditions[1];
-
+        
         if ($conditions) {
             foreach ($conditions as $condition) {
-                $items = array_merge(self::$items[self::$viewFile],self::$items['dynamic_global']);
+                $items = array_merge(self::$items[self::$viewFile], self::$items['dynamic_global']);
                 if (isset($items[$condition]) && $items[$condition]) {
-
+                    
                     $len = strlen("[if $condition]");
                     $condition_s = strpos($input, "[if $condition]");
-                    $condition_e = strpos($input, "[/if]",$condition_s);
-
-
+                    $condition_e = strpos($input, "[/if]", $condition_s);
+                    
                     $input = substr($input, 0, strpos($input, "[/if]")) . substr($input, strpos($input, "[/if]") + 5, strlen($input));
-
-                    $input = substr($input, 0, $condition_s) . substr($input, $condition_s  + $len, strlen($input));
-
-
-
-                }
-                else {
+                    
+                    $input = substr($input, 0, $condition_s) . substr($input, $condition_s + $len, strlen($input));
+                } else {
                     $input = substr($input, 0, strpos($input, "[if $condition]")) . substr($input, strpos($input, "[/if]") + 5, strlen($input));
                 }
             }
         }
-
+        
         return $input;
     }
 
-    private static function parseLoops ($input) {
+    private static function parseLoops($input) {
         $loops = null;
         preg_match_all('/\[for\s(.*?)\]/', $input, $loops);
         
@@ -161,7 +156,7 @@ class Template extends libs {
         
         if ($loops) {
             foreach ($loops as $loop) {
-                $items = array_merge(self::$items[self::$viewFile],self::$items['dynamic_global']);
+                $items = array_merge(self::$items[self::$viewFile], self::$items['dynamic_global']);
                 if (isset($items[$loop])) {
                     $vars = $items[$loop];
                     $loop_s = strpos($input, "[for $loop]") + strlen("[for $loop]");
@@ -175,9 +170,8 @@ class Template extends libs {
                         foreach ($var as $item => $value) {
                             $replaced = str_replace('[@' . $item . ']', $value, $replaced);
                         }
-                        $replaced = str_replace('[@_num]', $num++ , $replaced);
+                        $replaced = str_replace('[@_num]', $num ++, $replaced);
                         $body .= $replaced;
-                      
                     }
                     $input = substr_replace($input, $body, $loop_e + 6, 0);
                 }
@@ -188,7 +182,7 @@ class Template extends libs {
         return $input;
     }
 
-    private static function removeUnused ($input) {
+    private static function removeUnused($input) {
         $output = preg_replace('/\[(@|\$|#)(.*?)\]/', '', $input);
         return $output;
     }

@@ -1,7 +1,7 @@
 <?php
 namespace core\lib;
-use core\main\libs;
-class db extends libs{
+
+class db  {
 	protected $pdo = null;
 	function __construct($ConnectNow = true,$DbName = false,$DbHost = false,$DbUser = false,$DbPass = false) {
 		if($ConnectNow)
@@ -50,7 +50,7 @@ class db extends libs{
 	public function update(array $values, $table, $where = false, $limit = false, array $myarr = null) {
 		if (count ( $values ) < 0)
 			return false;
-		$fields = array ();
+		$fields = [];
 		foreach ( $values as $field => $val )
 			$fields [] = "`" . $field . "` = $val ";
 		

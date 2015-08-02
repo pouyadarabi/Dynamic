@@ -1,53 +1,15 @@
 <?php
 namespace core\lib;
 
-class DateTime
-{
+class DateTime {
 
-    public static $pdateWeekName = array(
-        "شنبه",
-        "یکشنبه",
-        "دوشنبه",
-        "سه شنبه",
-        "چهارشنبه",
-        "پنج شنبه",
-        "جمعه"
-    );
+    public static $pdateWeekName = array("شنبه","یکشنبه","دوشنبه","سه شنبه","چهارشنبه","پنج شنبه","جمعه");
 
-    public static $pdateMonthName = array(
-        "",
-        "فروردین",
-        "اردیبهشت",
-        "خرداد",
-        "تیر",
-        "مرداد",
-        "شهریور",
-        "مهر",
-        "آبان",
-        "آذر",
-        "دی",
-        "بهمن",
-        "اسفند"
-    );
+    public static $pdateMonthName = array("","فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند");
 
-    public static $MonthDays = array(
-        0,
-        31,
-        31,
-        31,
-        31,
-        31,
-        31,
-        30,
-        30,
-        30,
-        30,
-        30,
-        29
-    );
+    public static $MonthDays = array(0,31,31,31,31,31,31,30,30,30,30,30,29);
 
-    public static function pdate ($format, $timestamp = "")
-    {
+    public static function pdate($format, $timestamp = "") {
         global $pdateMonthName, $pdateWeekName, $MonthDays;
         if ($timestamp === "") {
             $timestamp = time();
@@ -190,8 +152,7 @@ class DateTime
         return $result;
     }
 
-    public static function pstrftime ($format, $timestamp = "")
-    {
+    public static function pstrftime($format, $timestamp = "") {
         global $pdateMonthName, $pdateWeekName, $MonthDays;
         if ($timestamp === "") {
             $timestamp = time();
@@ -346,8 +307,7 @@ class DateTime
         return $result;
     }
 
-    public static function DayOfYear ($pYear, $pMonth, $pDay)
-    {
+    public static function DayOfYear($pYear, $pMonth, $pDay) {
         global $MonthDays;
         $days = 0;
         for ($i = 1; $i < $pMonth; $i ++) {
@@ -356,16 +316,14 @@ class DateTime
         return $days + $pDay;
     }
 
-    public static function isKabise ($year)
-    {
+    public static function isKabise($year) {
         $mod = $year % 33;
         if ($mod == 1 or $mod == 5 or $mod == 9 or $mod == 13 or $mod == 17 or $mod == 22 or $mod == 26 or $mod == 30)
             return true;
         return false;
     }
 
-    public static function pmktime ($hour = 0, $minute = 0, $second = 0, $month = 0, $day = 0, $year = 0, $is_dst = -1)
-    {
+    public static function pmktime($hour = 0, $minute = 0, $second = 0, $month = 0, $day = 0, $year = 0, $is_dst = -1) {
         if ($hour == 0 && $minute == 0 && $second == 0 && $month == 0 && $day == 0 && $year == 0)
             return time();
         
@@ -374,8 +332,7 @@ class DateTime
         return mktime($hour, $minute, $second, $month, $day, $year, $is_dst);
     }
 
-    public static function pcheckdate ($month, $day, $year)
-    {
+    public static function pcheckdate($month, $day, $year) {
         global $MonthDays;
         if ($month < 1 || $month > 12 || $year < 1 || $year > 32767 || $day < 1) {
             return false;
@@ -388,61 +345,20 @@ class DateTime
         return true;
     }
 
-    public static function pgetdate ($timestamp = "")
-    {
+    public static function pgetdate($timestamp = "") {
         if ($timestamp === "")
             $timestamp = mktime();
         list ($seconds, $minutes, $hours, $mday, $wday, $mon, $year, $yday, $weekday, $month) = explode("-", self::pdate("s-i-G-j-w-n-Y-z-l-F", $timestamp));
-        return array(
-            0 => $timestamp,
-            "seconds" => $seconds,
-            "minutes" => $minutes,
-            "hours" => $hours,
-            "mday" => $mday,
-            "wday" => $wday,
-            "mon" => $mon,
-            "year" => $year,
-            "yday" => $yday,
-            "weekday" => $weekday,
-            "month" => $month
-        );
+        return array(0 => $timestamp,"seconds" => $seconds,"minutes" => $minutes,"hours" => $hours,"mday" => $mday,"wday" => $wday,"mon" => $mon,"year" => $year,"yday" => $yday,"weekday" => $weekday,"month" => $month);
     }
 
-    public static function div ($a, $b)
-    {
+    public static function div($a, $b) {
         return (int) ($a / $b);
     }
 
-    public static function gregorian_to_jalali ($g_y, $g_m, $g_d)
-    {
-        $g_days_in_month = array(
-            31,
-            28,
-            31,
-            30,
-            31,
-            30,
-            31,
-            31,
-            30,
-            31,
-            30,
-            31
-        );
-        $j_days_in_month = array(
-            31,
-            31,
-            31,
-            31,
-            31,
-            31,
-            30,
-            30,
-            30,
-            30,
-            30,
-            29
-        );
+    public static function gregorian_to_jalali($g_y, $g_m, $g_d) {
+        $g_days_in_month = array(31,28,31,30,31,30,31,31,30,31,30,31);
+        $j_days_in_month = array(31,31,31,31,31,31,30,30,30,30,30,29);
         
         $gy = $g_y - 1600;
         $gm = $g_m - 1;
@@ -476,43 +392,12 @@ class DateTime
         $jm = $i + 1;
         $jd = $j_day_no + 1;
         
-        return array(
-            $jy,
-            $jm,
-            $jd
-        );
+        return array($jy,$jm,$jd);
     }
 
-    public static function jalali_to_gregorian ($j_y, $j_m, $j_d)
-    {
-        $g_days_in_month = array(
-            31,
-            28,
-            31,
-            30,
-            31,
-            30,
-            31,
-            31,
-            30,
-            31,
-            30,
-            31
-        );
-        $j_days_in_month = array(
-            31,
-            31,
-            31,
-            31,
-            31,
-            31,
-            30,
-            30,
-            30,
-            30,
-            30,
-            29
-        );
+    public static function jalali_to_gregorian($j_y, $j_m, $j_d) {
+        $g_days_in_month = array(31,28,31,30,31,30,31,31,30,31,30,31);
+        $j_days_in_month = array(31,31,31,31,31,31,30,30,30,30,30,29);
         
         $jy = $j_y - 979;
         $jm = $j_m - 1;
@@ -558,24 +443,19 @@ class DateTime
         $gm = $i + 1;
         $gd = $g_day_no + 1;
         
-        return array(
-            $gy,
-            $gm,
-            $gd
-        );
+        return array($gy,$gm,$gd);
     }
 
-    public static function Gregorian2Jalali ($_entered_date, $delimiter = '-')
-    {	
-    	if (Security::CheckType($_entered_date, 'd')  === false) {
+    public static function Gregorian2Jalali($_entered_date, $delimiter = '-') {
+        if (Security::CheckType($_entered_date, 'd') === false) {
             return '';
         }
         $delimiter = '-';
-        $dt= explode(' ', $_entered_date);
+        $dt = explode(' ', $_entered_date);
         $miladijoomfa = $dt[0];
         if (count($dt) > 1) {
             $t = $dt[1];
-            $t = ' '. substr($t, 0, 8);
+            $t = ' ' . substr($t, 0, 8);
         } else
             $t = '';
         list ($gyear, $gmonth, $gday) = explode($delimiter, $miladijoomfa);
@@ -587,30 +467,28 @@ class DateTime
             $jday = '0' . $jday;
         }
         $shamsijoomfa = $jyear . '/' . $jmonth . '/' . $jday;
-        return $shamsijoomfa .$t;
+        return $shamsijoomfa . $t;
     }
 
-    public static function Jalali2Gregorian ($_entered_date, $delimiter = '/')
-    {
-        
-        if (Security::CheckType($_entered_date, 'd')  === false) {
+    public static function Jalali2Gregorian($_entered_date, $delimiter = '/') {
+        if (Security::CheckType($_entered_date, 'd') === false) {
             return '';
         }
         $dt = explode(' ', $_entered_date);
         $_entered_date = $dt[0];
         if (count($dt) > 1) {
-            $t = ' '. substr($dt[1], 0, 8);
+            $t = ' ' . substr($dt[1], 0, 8);
         } else
             $t = '';
         list ($gyear, $gmonth, $gday) = explode($delimiter, $_entered_date);
-      
+        
         list ($jyear, $jmonth, $jday) = self::jalali_to_gregorian($gyear, $gmonth, $gday);
         if ($jmonth < 10)
             $jmonth = '0' . $jmonth;
         if ($jday < 10)
             $jday = '0' . $jday;
         $_entered_date = $jyear . '-' . $jmonth . '-' . $jday;
-      
+        
         return $_entered_date . $t;
     }
 }

@@ -2,9 +2,8 @@
 
 namespace core\lib;
 
-use core\main\libs;
 
-class Messages extends libs {
+class Messages {
 	
 	/**
 	 * @param string $key

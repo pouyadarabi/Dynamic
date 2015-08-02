@@ -1,7 +1,7 @@
 <?php
 namespace core\lib;
-use core\main\libs;
-class Authorization extends libs
+
+class Authorization
 {
     public static function DoAuthorization()
     {        
@@ -9,7 +9,7 @@ class Authorization extends libs
   		$Perms = Session::get('Perms');
   		if ( empty( $Perms ) ){
   			Session::__setArray( 'Perms', $config['DefualtPerm'] );
-  			$Perms = array($config['DefualtPerm']);
+  			$Perms = [$config['DefualtPerm']];
   		}
   		
   		$REQUEST_METHOD =  strtolower($_SERVER[ 'REQUEST_METHOD' ]);
@@ -64,7 +64,7 @@ class Authorization extends libs
 				if ( empty( $Perms ) )
 					Helper::RaiseError( 404, $_SERVER['REQUEST_URI'] );
 		
-				if ( in_array( $Method, $Perms ) === TRUE )
+				if ( in_array( $Method, $Perms ) === true )
 					return;
 			}	
 			Helper::RaiseError( 404 , $_SERVER['REQUEST_URI']);

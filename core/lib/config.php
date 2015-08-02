@@ -1,13 +1,12 @@
 <?php
 namespace core\lib;
-use core\main\libs;
-class Config extends libs
+
+class Config
 {
 	private static $inited = false;
-	private static $config = array();
+	private static $config = [];
     public static function init()
     {
-    
         self::$config =  include dirname( __FILE__ ).'/../config/appconfig.php';
         self::$inited = true;
     }

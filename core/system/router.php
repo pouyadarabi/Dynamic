@@ -2,13 +2,14 @@
 namespace core\system;
 use core\lib\Authorization;
 use core\lib\Config;
+use core\lib\Helper;
 class router
 {
     public static function DoRoute()
     {
         $config = Config::getAll();
         $url_string = '';
-        $url_array = array();
+        $url_array = [];
         if(!ISCLI){
            	if(!empty($_SERVER [ 'QUERY_STRING' ]) && !empty($config['UrlAllowedChars']))
             	self::filter_uri( $_SERVER [ 'QUERY_STRING' ] ,$config['UrlAllowedChars']);
@@ -26,7 +27,7 @@ class router
         }
         
         if ( !self::ControllerIsValid( $url_array [0],$config['Controllers'] ) ) {
-            $url_array [0] = 'notfound';
+            $url_array [0] = $config['NotFoundController'];
             $url_array [1] = __Defualt_Action__;
         }    
         if ( empty( $url_array[1] ) ) {
@@ -34,7 +35,7 @@ class router
         }        
         define ( '__REQ__CLASS__', $url_array [0]);
         define ( '__REQ__METHOD__', $url_array [1]);    
-        if(!ISCLI && $config['CheckAnnotations'] === TRUE){
+        if(!ISCLI && $config['CheckAnnotations'] == true){
         	Authorization::DoAuthorization();
         }    
         $classname = '\\app\\controller\\'.__REQ__CLASS__;	
@@ -42,7 +43,7 @@ class router
         	$method = new \ReflectionMethod($classname, __REQ__METHOD__);
         	$method->invoke(new $classname);
     	 } catch (\ReflectionException $e) {
-
+    	     
     	 }
     }
     private static function ControllerIsValid($Controller_Name,$allowedControllers) {
@@ -51,11 +52,8 @@ class router
     private static function filter_uri( $str,$allowedChars )
     {
 		$str = urldecode( $str );
-    	if ( !preg_match( "|^[" . str_replace( array( '\\-', '\-' ), '-', preg_quote( $allowedChars, '-' ) ) . "]+$|i", $str )) {
-    		echo( '<h1>Bad Request</h1>' );
-    		if (function_exists('http_response_code'))
-    			http_response_code( 400 );
-    		die;
+    	if ( !preg_match( "|^[" . str_replace( [ '\\-', '\-' ], '-', preg_quote( $allowedChars, '-' ) ) . "]+$|i", $str )) {
+    		Helper::printLast('<h1>Bad Request</h1>',400);
     	}
     	
     }

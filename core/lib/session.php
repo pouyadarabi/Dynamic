@@ -1,14 +1,11 @@
 <?php
 namespace core\lib;
-use core\main\libs;
 
-class Session extends libs
-{
+class Session {
 
     private static $inited = false;
 
-    public static function init ()
-    {
+    public static function init() {
         $config = Config::getAll();
         $app_name = str_replace('.', '_', $config['AppName']);
         session_name($app_name);
@@ -18,7 +15,7 @@ class Session extends libs
             if (isset($_COOKIE[$app_name])) {
                 $session_id = $_COOKIE[$app_name];
             }
-            if (!preg_match('/^[a-z0-9]{32}$/', $session_id)) {
+            if (! preg_match('/^[a-z0-9]{32}$/', $session_id)) {
                 session_regenerate_id();
             }
             session_start();
@@ -58,16 +55,14 @@ class Session extends libs
         self::$inited = true;
     }
 
-    public static function Destroy ()
-    {
+    public static function Destroy() {
         if (! self::$inited)
             self::init();
         session_destroy();
-        $_SESSION = array();
+        $_SESSION = [];
     }
 
-    public static function get ($index)
-    {
+    public static function get($index) {
         if (! self::$inited)
             self::init();
         if (isset($_SESSION[$index]))
@@ -75,36 +70,31 @@ class Session extends libs
         return '';
     }
 
-    public static function set ($index, $value)
-    {
+    public static function set($index, $value) {
         if (! self::$inited)
             self::init();
         $_SESSION[$index] = Security::CleanXssString($value);
     }
 
-    public static function __setArray ($index, $value)
-    {
+    public static function __setArray($index, $value) {
         if (! self::$inited)
             self::init();
         $_SESSION[$index][] = Security::CleanXssString($value);
     }
 
-    public static function __unsetArray ($key1, $key2)
-    {
+    public static function __unsetArray($key1, $key2) {
         if (! self::$inited)
             self::init();
         unset($_SESSION[$key1][$key2]);
     }
 
-    public static function UnsetSession ($SessionName)
-    {
+    public static function UnsetSession($SessionName) {
         if (! self::$inited)
             self::init();
         unset($_SESSION[$SessionName]);
     }
 
-    public static function Check ($Name)
-    {
+    public static function Check($Name) {
         if (! self::$inited)
             self::init();
         if (! isset($_SESSION[$Name]) || (trim($_SESSION[$Name]) == '')) {
@@ -114,8 +104,7 @@ class Session extends libs
         return true;
     }
 
-    public static function ReGenarate ()
-    {
+    public static function ReGenarate() {
         if (! self::$inited)
             self::init();
         session_regenerate_id();

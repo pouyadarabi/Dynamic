@@ -23,11 +23,11 @@ class GET extends Request
     public function getSegment ($segmentNumber)
     {
         $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $url = str_ireplace(array(__REQ__METHOD__,__REQ__CLASS__,__Dynamic_PATH__), '', urldecode($url));
+        $url = str_ireplace([__REQ__METHOD__,__REQ__CLASS__,__Dynamic_PATH__], '', urldecode($url));
         $url = ltrim($url, '/');       
        
         if ($this->Required && $url == '') {
-            $this->PrintLast(Messages::get('CheckInput'));
+           Helper::printLast(Messages::get('CheckInput'));
         }
       
         if ($this->Type === false)
@@ -77,7 +77,7 @@ class GET extends Request
             }
         }
         if ($response === false) {
-            $this->PrintLast(Messages::get('CheckInput'));
+            Helper::printLast(Messages::get('CheckInput'));
         }
         if ($this->Clean === true && $response === true) {
             return Security::CleanXssString($data);
