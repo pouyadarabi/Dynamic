@@ -12,5 +12,17 @@ class Main extends Controller {
     public function index() {
     	Template::Show('main');
 	}
+	/**
+	 * @perm(guest)
+	 */
+	public function postAction() {
+	    echo 'post';
+	}
+	/**
+	 * @perm(guest)
+	 */
+	public function getAction() {
+	    echo 'get';
+	}
 
 }

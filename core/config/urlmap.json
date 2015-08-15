@@ -1,0 +1,12 @@
+{
+    "Controller/Action1": "Main/index",
+    "Controller/Action2": "Main/index",
+    "Controller": "Main",
+    "Controller/Action": [{
+        "method": "post",
+        "controller": "Main/postAction"
+    }, {
+        "method": "get",
+        "controller": "Main/getAction"
+    }]
+}

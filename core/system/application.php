@@ -1,7 +1,7 @@
 <?php
 namespace core\system;
 
-use core\system\router;
+use core\system\Router;
 use core\lib\Config;
 
 class Application {
@@ -14,13 +14,13 @@ class Application {
         $DynamicRoot = self::getSitePath();
         define('__Dynamic_PATH__', $DynamicRoot);
         define('__APP_PATH__', __SITE_PATH__ . '/app');
-        define('__View_PATH__', __APP_PATH__ . '/view/');
+        define('__REQUEST_METHOD__',  strtolower($_SERVER[ 'REQUEST_METHOD' ]));
         define('__Defualt_Controller__', $config['DefualtController']);
         define('__Defualt_Action__', $config['DefualtAction']);
         
         self::SecurityHeader();
         self::CheckReporting($config['DebugMode']);
-        router::DoRoute();
+        Router::DoRoute();
     }
 
     /*
@@ -42,7 +42,6 @@ class Application {
         if (ISCLI)
             return;
         
-        header('X-Frame-Options: SameOrigin');
         header('X-XSS-Protection: 1');
         header('X-Powered-By: Dynamic');
         header("Content_security_policy : default-src 'self' style-src 'self' 'unsafe-inline';");

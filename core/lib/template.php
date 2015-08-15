@@ -45,7 +45,7 @@ class Template {
     }
 
     private static function parseInput() {
-        $viewFile = __View_PATH__ . self::$viewFile;
+        $viewFile = __APP_PATH__. '/view/' . self::$viewFile;
         $output = file_get_contents($viewFile . '.html');
         return $output;
     }

@@ -20,6 +20,7 @@ return [
     'AppName' => 'Dynamic',
     'Lang' => 'en',
 
+    'URLMapping' => false,
     'Controllers' => ['main'],
 
     'CheckAnnotations' => false,
@@ -32,9 +33,9 @@ return [
     'CsrfTokenLocation' => 'h',
     'CheckCsrfOnPerm' => 'logined',
     
+    'AntiClickJacking' => true,
     
-    
-    'DefualtController' => 'main',
+    'DefualtController' => 'Controller',
     'DefualtAction' => 'index',
     'NotFoundController' => 'notfound'
     
