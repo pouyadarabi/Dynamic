@@ -9,17 +9,20 @@ class Application {
     public static function initialize() {
         $config = Config::getAll();
         define('ISCLI', PHP_SAPI === 'cli');
-        
-        self::checkAllowedHosts($config['AllowedHosts']);
+
         $DynamicRoot = self::getSitePath();
         define('__Dynamic_PATH__', $DynamicRoot);
-        define('__APP_PATH__', __SITE_PATH__ . '/app');
-        define('__REQUEST_METHOD__',  strtolower($_SERVER[ 'REQUEST_METHOD' ]));
+        define('__APP_PATH__', __SITE_PATH__ . '/app');   
         define('__Defualt_Controller__', $config['DefualtController']);
-        define('__Defualt_Action__', $config['DefualtAction']);
-        
-        self::SecurityHeader();
+        define('__Defualt_Action__', $config['DefualtAction']);       
         self::CheckReporting($config['DebugMode']);
+        
+        if (!ISCLI){
+            define('__REQUEST_METHOD__',  strtolower($_SERVER[ 'REQUEST_METHOD' ]));
+            self::checkAllowedHosts($config['AllowedHosts']);
+            self::SecurityHeader();
+        }
+        
         Router::DoRoute();
     }
 
@@ -27,8 +30,7 @@ class Application {
      * fix Host header attack
      */
     private static function checkAllowedHosts($hosts) {
-        if (ISCLI)
-            return;
+
         if ($hosts !== '') {
             $host = $_SERVER['HTTP_HOST'];
             $hosts = explode(',', $hosts);
@@ -39,9 +41,7 @@ class Application {
     }
 
     private static function SecurityHeader() {
-        if (ISCLI)
-            return;
-        
+
         header('X-XSS-Protection: 1');
         header('X-Powered-By: Dynamic');
         header("Content_security_policy : default-src 'self' style-src 'self' 'unsafe-inline';");
