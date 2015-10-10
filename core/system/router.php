@@ -1,6 +1,5 @@
 <?php
 namespace core\system;
-use core\lib\Authorization;
 use core\lib\Config;
 
 class Router {
@@ -26,6 +25,7 @@ class Router {
         if (empty($url_string)) {
             $url_array[0] = __Defualt_Controller__;
         }
+      
         if ($config['URLMapping'] == true) {
             self::ParseUrlMapping($url_array);
         } else {
@@ -34,21 +34,32 @@ class Router {
             }
         }
         
+       
         if (empty($url_array[1])) {
             $url_array[1] = __Defualt_Action__;
         }
         
-        define('__REQ__CLASS__', $url_array[0]);
-        define('__REQ__METHOD__', $url_array[1]);
+        $class = $url_array[0];
+        $method = $url_array[1];
+      
         if (! ISCLI && $config['CheckAnnotations'] == true) {
-            GateWay::check();
+            GateWay::check($class,$method);
         }
-        $classname = '\\app\\controller\\' . __REQ__CLASS__;
+        $classname = '\\app\\controller\\'.$class;
+      
         try {
-            $method = new \ReflectionMethod($classname, __REQ__METHOD__);
-            $method->invoke(new $classname());
+            $method = new \ReflectionMethod($classname, $method);
         } catch (\ReflectionException $e) {
+            $class = 'notfound';
+            $classname = '\\app\\controller\\'.$class;
+            $method = new \ReflectionMethod($classname, __Defualt_Action__);
+            	
         }
+        define ( '__REQ__CLASS__', $class);
+        define ( '__REQ__METHOD__', $method);
+        
+        $method->invoke(new $classname);
+        exit();    
     }
 
     private static function ControllerIsValid ($Controller_Name, $allowedControllers) {
@@ -68,13 +79,12 @@ class Router {
 
     private static function ParseUrlMapping (&$url_array) {
         $checkString = implode('/', $url_array);
-        $mapFile = file_get_contents(dirname(__FILE__) .
-                 '/../config/urlmap.json');
+        $mapFile = file_get_contents(dirname(__FILE__) . '/../config/urlmap.json');
         $maps = json_decode($mapFile, true);
         $checkString = strtolower($checkString);
         
         $maps = array_change_key_case($maps);
-        
+      
         if (array_key_exists($checkString, $maps)) {
             $map = $maps[$checkString];
             

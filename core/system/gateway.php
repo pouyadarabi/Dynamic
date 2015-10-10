@@ -8,11 +8,11 @@ use core\lib\Security;
 
 class GateWay {
 
-    public static function check () {
-        self::CheckAnnotations();
+    public static function check ($class,$method) {
+        self::CheckAnnotations($class,$method);
     }
 
-    private static function checkAnnotations () {
+    private static function checkAnnotations ($class,$method) {
         $config = Config::getAll();
         $Perms = Session::get('Perms');
         if (empty($Perms)) {
@@ -21,8 +21,8 @@ class GateWay {
         }
         
         $forbidden = true;
-        $ClassPerm = Annotations::getClassAnnotations('\\app\\controller\\' . __REQ__CLASS__);
-        $MethodPerm = Annotations::getMethodAnnotations('\\app\\controller\\' . __REQ__CLASS__, __REQ__METHOD__);
+        $ClassPerm = Annotations::getClassAnnotations('\\app\\controller\\' . $class);
+        $MethodPerm = Annotations::getMethodAnnotations('\\app\\controller\\' . $class, $method);
         
         if (isset($ClassPerm['perm']) && is_array($ClassPerm['perm'])) {
             $forbidden = false;

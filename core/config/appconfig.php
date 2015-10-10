@@ -35,7 +35,7 @@ return [
     
     'AntiClickJacking' => true,
     
-    'DefualtController' => 'Controller',
+    'DefualtController' => 'main',
     'DefualtAction' => 'index',
     'NotFoundController' => 'notfound'
     
