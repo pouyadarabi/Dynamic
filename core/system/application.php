@@ -48,7 +48,7 @@ class Application {
     }
 
     private static function CheckReporting($status) {
-        if ($status === TRUE) {
+        if ($status === true) {
             error_reporting(E_ALL);
             ini_set('display_errors', 'On');
         } else {
