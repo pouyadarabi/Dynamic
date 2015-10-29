@@ -34,8 +34,8 @@ class GateWay {
             }
         }
         $ignoreChecks = ['csrf' => false,'clickjacking' => false];
-        self::CheckAnnotations($ClassPerm, $Perms, $config, $ignoreChecks);
-        self::CheckAnnotations($MethodPerm, $Perms, $config, $ignoreChecks);
+        self::CheckAnnotation($ClassPerm, $Perms, $config, $ignoreChecks);
+        self::CheckAnnotation($MethodPerm, $Perms, $config, $ignoreChecks);
         
         if ($config['AntiClickJacking'] && ! $ignoreChecks['clickjacking']) {
             header('X-Frame-Options: SameOrigin');
