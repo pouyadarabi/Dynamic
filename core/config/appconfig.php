@@ -8,7 +8,7 @@ return [
     'DbUser' => 'DB_USER',
     'DbPass' => 'DB_PASS',
     
-    'Blowfish_Pre' => '$6$rounds=>5000$',
+    'Blowfish_Pre' => '$6$rounds=5000$',
     'Blowfish_End' => '$',
     'UrlAllowedChars' => 'a-z 0-9~%.:_\-=&',
     'Session_IPCheck' => false,
