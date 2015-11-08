@@ -12,7 +12,7 @@ return array (
 		'DbPass' => 'DB_PASS', // Db PassWord
 		                       
 		// ----------------------| Security |----------------------- #
-		'Blowfish_Pre' => '$6$rounds=>5000$', // blowfish for CRYPT_SHA256 encryption (php.net/manual/en/function.crypt.php)
+		'Blowfish_Pre' => '$6$rounds=5000$', // blowfish for CRYPT_SHA256 encryption (php.net/manual/en/function.crypt.php)
 		'Blowfish_End' => '$', // blowfish for encryption
 		'UrlAllowedChars' => 'a-z 0-9~%.:_\-=&', // Allowed chars in url
 		'Session_IPCheck' => false,
