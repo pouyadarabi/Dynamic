@@ -69,9 +69,6 @@ class db  {
 		if (count ( $values ) < 0)
 			return false;
 		
-		foreach ( $values as $field => $val )
-			$values [$field] = $val;
-		
 		$stmt = "INSERT INTO `" . $table . "` (`" . implode ( array_keys ( $values ), "`, `" ) . "`) VALUES (" . implode ( $values, "," ) . ")";
 		if ($this->query ( $stmt, $myarr )) {
 			return true;

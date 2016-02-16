@@ -20,7 +20,7 @@ class Session {
             }
             session_start();
         }
-        
+        self::$inited = true;
         if (isset($_SESSION['fingerprint'])) {
             $var = false;
             if ($config['Session_Secure']) {
@@ -52,7 +52,6 @@ class Session {
             }
         }
         
-        self::$inited = true;
     }
 
     public static function Destroy() {
