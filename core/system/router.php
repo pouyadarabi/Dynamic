@@ -39,26 +39,28 @@ class Router {
             $url_array[1] = __Defualt_Action__;
         }
         
-        $class = $url_array[0];
-        $method = $url_array[1];
+        $class_name = $url_array[0];
+        $method_name = $url_array[1];
       
+       
         if (! ISCLI && $config['CheckAnnotations'] == true) {
-            GateWay::check($class,$method);
+            GateWay::check($class_name,$method_name);
         }
-        $classname = '\\app\\controller\\'.$class;
-      
+        $class_namespace = '\\app\\controller\\'.$class_name;
+       
         try {
-            $method = new \ReflectionMethod($classname, $method);
+            $method = new \ReflectionMethod($class_namespace, $method_name);
         } catch (\ReflectionException $e) {
-            $class = 'notfound';
-            $classname = '\\app\\controller\\'.$class;
-            $method = new \ReflectionMethod($classname, __Defualt_Action__);
+            $class_name = 'notfound';
+            $class_namespace = '\\app\\controller\\'.$class_name;
+            $method = new \ReflectionMethod($class_namespace, __Defualt_Action__);
             	
         }
-        define ( '__REQ__CLASS__', $class);
-        define ( '__REQ__METHOD__', $method);
+        define ( '__REQ__CLASS__', $class_name);
+        define ( '__REQ__METHOD__', $method_name);
         
-        $method->invoke(new $classname);
+        $method->invoke(new $class_namespace);
+        
         exit();    
     }
 
