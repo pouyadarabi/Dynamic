@@ -4,20 +4,13 @@ namespace core\lib;
 class Request {
 
     protected $Clean = true;
-
     protected $Required = true;
-
-    protected $TypeArray = array();
-
+    protected $TypeArray = [];
     protected $Type = false;
-
     protected $MyCounter = 0;
-
     protected $Range = false;
-
     protected $Cases = false;
-
-    protected $Length = [0,100];
+    protected $Length = false;
 
     protected function getvar($index, $ReqType, $Required, $Clean, $Length, $Range, $Cases, $default) {
         if ($this->Type === false)

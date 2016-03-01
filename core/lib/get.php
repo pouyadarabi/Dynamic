@@ -19,13 +19,14 @@ class GET extends Request
     {    
         return parent::getvar($index, 'g', $this->Required, $this->Clean, $this->Length, $this->Range, $this->Cases,$default);
     }
-
+    
     public function getSegment ($segmentNumber)
     {
         $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $url = str_ireplace([__REQ__METHOD__,__REQ__CLASS__,__Dynamic_PATH__], '', urldecode($url));
-        $url = ltrim($url, '/');       
-       
+        $main_url = Helper::site_url(__REQ__CLASS__.'/'.__REQ__METHOD__,false);
+        $url = str_ireplace($main_url, '', urldecode($url));
+        $url = ltrim($url, '/');
+    
         if ($this->Required && $url == '') {
            Helper::printLast(Messages::get('CheckInput'));
         }
