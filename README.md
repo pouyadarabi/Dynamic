@@ -1,7 +1,7 @@
 Dynamic
 =======
 
-[![Build Status](https://travis-ci.org/PouyaDarabi/Dynamic.svg)](https://travis-ci.org/PouyaDarabi/Dynamic)
+[![Build Status](https://travis-ci.org/pouyadarabi/Dynamic.svg)](https://travis-ci.org/PouyaDarabi/Dynamic)
 
 
 This is not an stable version
