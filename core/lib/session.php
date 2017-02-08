@@ -15,7 +15,7 @@ class Session extends libs
         
         if (session_id() == '')
             session_start();
-        
+        self::$inited = true;
         if (isset($_SESSION['fingerprint'])) {
             $var = false;
             if ($config['Session_Secure']) {
@@ -47,7 +47,7 @@ class Session extends libs
             }
         }
         
-        self::$inited = true;
+        
     }
 
     public static function Destroy ()
