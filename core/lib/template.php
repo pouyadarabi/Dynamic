@@ -123,7 +123,7 @@ class Template {
 
     private static function parseConditions($input) {
         $conditions = null;
-        preg_match_all('/\[#if\s(.*?)\]/', $input, $conditions);
+        preg_match_all('/\[if\s(.*?)\]/', $input, $conditions);
         
         $conditions = $conditions[1];
         
@@ -132,15 +132,15 @@ class Template {
                 $items = array_merge(self::$items[self::$viewFile], self::$items['dynamic_global']);
                 if (isset($items[$condition]) && $items[$condition]) {
                     
-                    $len = strlen("[#if $condition]");
-                    $condition_s = strpos($input, "[#if $condition]");
+                    $len = strlen("[if $condition]");
+                    $condition_s = strpos($input, "[if $condition]");
                     $condition_e = strpos($input, "[/if]", $condition_s);
                     
                     $input = substr($input, 0, strpos($input, "[/if]")) . substr($input, strpos($input, "[/if]") + 5, strlen($input));
                     
                     $input = substr($input, 0, $condition_s) . substr($input, $condition_s + $len, strlen($input));
                 } else {
-                    $input = substr($input, 0, strpos($input, "[#if $condition]")) . substr($input, strpos($input, "[/if]") + 5, strlen($input));
+                    $input = substr($input, 0, strpos($input, "[if $condition]")) . substr($input, strpos($input, "[/if]") + 5, strlen($input));
                 }
             }
         }
