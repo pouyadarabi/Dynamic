@@ -24,9 +24,9 @@ class Template extends libs {
         self::$viewFile = $viewFile;
         self::checkVars();
         $output = self::parseInput();
+        $output = self::parseConditions($output);
         $output = self::parsePermissions($output);
         $output = self::parseIncludes($output);
-        $output = self::parseConditions($output);
         $output = self::parseLoops($output);
         $output = self::parseVariables($output);
         $output = self::removeUnused($output);
@@ -123,7 +123,7 @@ class Template extends libs {
 
     private static function parseConditions ($input) {
         $conditions = null;
-        preg_match_all('/\[if\s(.*?)\]/', $input, $conditions);
+        preg_match_all('/\[#if\s(.*?)\]/', $input, $conditions);
 
         $conditions = $conditions[1];
 
@@ -132,8 +132,8 @@ class Template extends libs {
                 $items = array_merge(self::$items[self::$viewFile],self::$items['dynamic_global']);
                 if (isset($items[$condition]) && $items[$condition]) {
 
-                    $len = strlen("[if $condition]");
-                    $condition_s = strpos($input, "[if $condition]");
+                    $len = strlen("[#if $condition]");
+                    $condition_s = strpos($input, "[#if $condition]");
                     $condition_e = strpos($input, "[/if]",$condition_s);
 
 
@@ -145,7 +145,7 @@ class Template extends libs {
 
                 }
                 else {
-                    $input = substr($input, 0, strpos($input, "[if $condition]")) . substr($input, strpos($input, "[/if]") + 5, strlen($input));
+                    $input = substr($input, 0, strpos($input, "[#if $condition]")) . substr($input, strpos($input, "[/if]") + 5, strlen($input));
                 }
             }
         }
